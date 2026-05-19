@@ -28,7 +28,11 @@
 
 			// Pages
 			"@pages": ["pages/index"],
-			"@pages/*": ["pages/*"]
+			"@pages/*": ["pages/*"],
+
+			// FEATURES
+			"@home": ["features/home/index"],
+			"@home/*": ["featers/home/*"]
 		}
 	},
 	"include": ["src"]
