@@ -32,7 +32,10 @@
 
 			// FEATURES
 			"@home": ["features/home/index"],
-			"@home/*": ["featers/home/*"]
+			"@home/*": ["featers/home/*"],
+
+			"@header": ["features/header/index"],
+			"@header/*": ["featers/header/*"]
 		}
 	},
 	"include": ["src"]
