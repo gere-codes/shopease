@@ -1,3 +1,10 @@
+import { SlideHome } from '@home';
+
 export const HomePage = () => {
-	return <div className="text-red-500 font-bold">home page </div>;
+	return (
+		<section>
+			{/* Slides */}
+			<SlideHome />
+		</section>
+	);
 };

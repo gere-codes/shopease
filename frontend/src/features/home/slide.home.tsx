@@ -24,7 +24,7 @@ export const SlideHome = () => {
 				}}
 				slidesPerView={1}
 				onSlideChange={() => {}}
-				className="h-full"
+				className="h-[80vh]"
 				style={{}}
 			>
 				<SwiperSlide>
