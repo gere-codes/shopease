@@ -1,10 +1,14 @@
 import './App.css';
+import { Route, Routes } from 'react-router';
+import { HomePage } from '@pages';
 
 function App() {
 	return (
-		<section>
-			<h2 className="text-red-500 font-bold">home</h2>
-		</section>
+		<>
+			<Routes>
+				<Route path="/" element={<HomePage />} />
+			</Routes>
+		</>
 	);
 }
 
