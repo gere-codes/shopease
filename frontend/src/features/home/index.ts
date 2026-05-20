@@ -1,1 +1,1 @@
-export { SlideHome } from './slide.home';
+export { SlideList } from './components/slide.list';
