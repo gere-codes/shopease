@@ -1,15 +1,16 @@
+import { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { slides } from '../constants';
 import { SlideItem } from './slide.item';
 
-// Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-// import required modules
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 
 export const SlideList = () => {
+	const [activeIndex, setActiveIndex] = useState(0);
+
 	return (
 		<>
 			<Swiper
@@ -22,18 +23,12 @@ export const SlideList = () => {
 				}}
 				speed={500}
 				slidesPerView={1}
-				onSlideChange={() => {}}
+				onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
 				className="h-[90vh]"
 			>
-				{slides.map((slide) => (
+				{slides.map((slide, index) => (
 					<SwiperSlide>
-						<SlideItem
-							title={slide.title}
-							img={slide.img}
-							cta={slide.cta}
-							textAlign={slide.textAlign}
-							badge={slide.badge}
-						/>
+						<SlideItem {...slide} isActive={activeIndex === index} />
 					</SwiperSlide>
 				))}
 			</Swiper>

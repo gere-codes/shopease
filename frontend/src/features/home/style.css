@@ -1,0 +1,36 @@
+@keyframes heroImage {
+	0% {
+		opacity: 0;
+		transform: scale(1.15);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1.05);
+	}
+}
+
+@keyframes fadeUp {
+	0% {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.is-active .animate-heroImage {
+	animation: heroImage 1.2s ease-out forwards;
+}
+
+.is-active .animate-fadeUp {
+	animation: fadeUp 0.8s ease-out forwards;
+}
+
+.delay-150 {
+	animation-delay: 150ms;
+}
+.delay-300 {
+	animation-delay: 300ms;
+}
