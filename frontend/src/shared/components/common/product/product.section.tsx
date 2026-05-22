@@ -5,9 +5,12 @@ interface Props {
 	title: string;
 	actionLabel?: string;
 	path?: string;
-	products: TProduct;
+	products: TProduct[];
+	limit?: number;
 }
-export const ProductSection = ({ title = 'Products', actionLabel, products, path }: Props) => {
+export const ProductSection = ({ title = 'Products', actionLabel, products, path, limit }: Props) => {
+	const safeLimit = typeof limit === 'number' && limit > 0 ? Math.floor(limit) : undefined;
+	const data = typeof safeLimit === 'number' ? products.slice(0, safeLimit) : products;
 	return (
 		<section className="px-6 py-10 w-full max-w-7xl mx-auto">
 			<section className="flex gap-2 items-end">
@@ -21,7 +24,7 @@ export const ProductSection = ({ title = 'Products', actionLabel, products, path
 			</section>
 
 			<section className="w-full mt-4">
-				<ProductGrid products={products} />
+				<ProductGrid products={data} />
 			</section>
 		</section>
 	);
