@@ -35,7 +35,15 @@
 			"@home/*": ["featers/home/*"],
 
 			"@header": ["features/header/index"],
-			"@header/*": ["featers/header/*"]
+			"@header/*": ["featers/header/*"],
+
+			// SHARED
+			"@common": ["shared/components/common/index"],
+			"@common/*": ["shared/components/common/*"],
+
+			// DATA
+			"@data": ["data/index"],
+			"@data/*": ["data/*"]
 		}
 	},
 	"include": ["src"]
