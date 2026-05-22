@@ -1,11 +1,14 @@
 import { ProductArraivals, SlideList } from '@home';
-import { PromoBanner } from '@common';
+import { CategoriesList, PromoBanner } from '@common';
 
 export const HomePage = () => {
 	return (
 		<section>
 			{/* Slides */}
 			<SlideList />
+
+			{/* Categories */}
+			<CategoriesList />
 
 			{/* New Arrivales */}
 			<ProductArraivals />
