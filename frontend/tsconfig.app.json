@@ -37,6 +37,9 @@
 			"@header": ["features/header/index"],
 			"@header/*": ["features/header/*"],
 
+			"@product": ["features/product/index"],
+			"@product/*": ["features/product/*"],
+
 			// SHARED
 			"@common": ["shared/components/common/index"],
 			"@common/*": ["shared/components/common/*"],
