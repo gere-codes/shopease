@@ -32,10 +32,10 @@
 
 			// FEATURES
 			"@home": ["features/home/index"],
-			"@home/*": ["featers/home/*"],
+			"@home/*": ["features/home/*"],
 
 			"@header": ["features/header/index"],
-			"@header/*": ["featers/header/*"],
+			"@header/*": ["features/header/*"],
 
 			// SHARED
 			"@common": ["shared/components/common/index"],
