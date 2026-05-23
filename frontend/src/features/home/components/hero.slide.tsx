@@ -13,7 +13,7 @@ const mapAlign: Record<NonNullable<ISlide['textAlign']>, alignment[]> = {
 interface Props extends ISlide {
 	isActive: boolean;
 }
-export const SlideItem = memo(({ img, badge, title, cta, textAlign = 'left', isActive }: Props) => {
+export const HeroSlide = memo(({ img, badge, title, cta, textAlign = 'left', isActive }: Props) => {
 	const [alignItems, textAlignClass] = mapAlign[textAlign];
 
 	return (

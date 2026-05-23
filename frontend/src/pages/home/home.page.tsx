@@ -1,11 +1,11 @@
-import { ProductArraivals, SlideList } from '@home';
+import { ProductArraivals, HeroSlides } from '@home';
 import { CategoryCarousel, PromoBanner } from '@common';
 
 export const HomePage = () => {
 	return (
 		<section>
 			{/* Slides */}
-			<SlideList />
+			<HeroSlides />
 
 			{/* Categories */}
 			<CategoryCarousel />

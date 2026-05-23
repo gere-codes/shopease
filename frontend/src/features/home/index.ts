@@ -1,2 +1,2 @@
-export { SlideList } from './components/slide.list';
+export { HeroSlides } from './components/hero.slides';
 export { ProductArraivals } from './components/product.arrivals';

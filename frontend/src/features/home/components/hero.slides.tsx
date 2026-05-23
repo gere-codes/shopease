@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { slides } from '../constants';
-import { SlideItem } from './slide.item';
+import { HeroSlide } from './hero.slide';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 
-export const SlideList = () => {
+export const HeroSlides = () => {
 	const [activeIndex, setActiveIndex] = useState(0);
 
 	return (
@@ -28,7 +28,7 @@ export const SlideList = () => {
 			>
 				{slides.map((slide, index) => (
 					<SwiperSlide>
-						<SlideItem {...slide} isActive={activeIndex === index} />
+						<HeroSlide {...slide} isActive={activeIndex === index} />
 					</SwiperSlide>
 				))}
 			</Swiper>
