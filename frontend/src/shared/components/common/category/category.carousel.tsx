@@ -1,6 +1,18 @@
 import { Link } from 'react-router';
+import { Carousel } from '../carousel/carousel';
+import { categories } from './data';
+import { Container } from '../container.common';
 
-export const CategoryItem = ({ title, image, path }: { title: string; image: string; path: string }) => {
+export const CategoryCarousel = () => {
+	return (
+		<Container>
+			<h2 className="text-4xl mb-12 text-center capitalize font-medium">Shop by Categories</h2>
+			<Carousel component={CategoryItem} items={categories} />
+		</Container>
+	);
+};
+
+const CategoryItem = ({ title, image, path }: { title: string; image: string; path: string }) => {
 	return (
 		<li className="">
 			<Link to={path} className="overflow-hidden">

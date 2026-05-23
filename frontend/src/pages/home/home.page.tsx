@@ -1,5 +1,5 @@
 import { ProductArraivals, SlideList } from '@home';
-import { CategoriesList, PromoBanner } from '@common';
+import { CategoryCarousel, PromoBanner } from '@common';
 
 export const HomePage = () => {
 	return (
@@ -8,7 +8,7 @@ export const HomePage = () => {
 			<SlideList />
 
 			{/* Categories */}
-			<CategoriesList />
+			<CategoryCarousel />
 
 			{/* New Arrivales */}
 			<ProductArraivals />
