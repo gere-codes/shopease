@@ -13,12 +13,12 @@ export const ProductSection = ({ title = 'Products', actionLabel, products, path
 	const data = typeof safeLimit === 'number' ? products.slice(0, safeLimit) : products;
 	return (
 		<section className="px-6 py-10 w-full max-w-7xl mx-auto">
-			<section className="flex gap-2 items-end">
-				<h2 className="text-5xl ">{title}</h2>
+			<section className="flex gap-2 items-end  justify-center">
+				<h4 className="text-4xl font-medium text-center ">{title}</h4>
 
 				{actionLabel && (
 					<Link to={path ?? '#'}>
-						<small className="underline">{actionLabel}</small>
+						<small className="underline text-sm">{actionLabel}</small>
 					</Link>
 				)}
 			</section>
