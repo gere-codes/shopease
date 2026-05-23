@@ -8,7 +8,7 @@ interface Props {
 export const PromoBanner = ({ title, cta, badge }: Props) => {
 	const navivate = useNavigate();
 	return (
-		<section className="h-[60vh] bg-black text-white flex  font-heading">
+		<section className="h-[60vh] bg-black/90 text-white flex  font-heading">
 			<section className="flex justify-between items-center w-full max-w-7xl mx-auto px-6">
 				<section>
 					<ul className="flex flex-col gap-4 ">
@@ -24,8 +24,8 @@ export const PromoBanner = ({ title, cta, badge }: Props) => {
 					</ul>
 				</section>
 				<section className="">
-					<h2 className="text-white text-7xl">{title}</h2>
-					<small className="text-center">{badge}</small>
+					<h2 className="text-white text-5xl md:text-7xl font-bold">{title}</h2>
+					<p className="text-white mt-2 text-lg">{badge}</p>
 				</section>
 				<button className="border-white border px-3 py-2 cursor-pointer" onClick={() => navivate(cta)}>
 					Shop Now
