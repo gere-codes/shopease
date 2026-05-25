@@ -8,7 +8,7 @@ export const ProductDetails = ({ product }: { product: TProduct }) => {
 	const [isDescOpen, setIsDescOpen] = useState<boolean>(true);
 	const [isShippingOpen, setIsShippingOpen] = useState<boolean>(false);
 
-	const increment = () => setQuantity((prev) => (prev > product.quantity ? prev + 1 : product.quantity));
+	const increment = () => setQuantity((prev) => (prev < product.quantity ? prev + 1 : product.quantity));
 	const decrement = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
 	const handleAddToCart = () => {

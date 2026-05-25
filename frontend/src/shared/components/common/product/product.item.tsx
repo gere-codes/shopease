@@ -1,12 +1,13 @@
+import type { TProduct } from '@/features/product';
 import { Link } from 'react-router';
 
-export const ProductItem = ({ product }) => {
+export const ProductItem = ({ product }: { product: TProduct }) => {
 	return (
 		<li key={product.id} className="">
 			<Link to={`/product/${product.id}`} className="overflow-hidden ">
 				<div className="block group relative  overflow-hidden">
 					<img
-						src={product?.image[0]}
+						src={product?.images[0]}
 						alt={product.name}
 						loading="lazy"
 						className="h-full object-cover aspect-square transition-transform duration-300 group-hover:scale-105"
