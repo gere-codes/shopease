@@ -1,6 +1,6 @@
 import './App.css';
 import { Route, Routes } from 'react-router';
-import { HomePage } from '@pages';
+import { HomePage, ProductPage } from '@pages';
 import { Nav } from '@header';
 import { Footer } from '@common';
 
@@ -11,6 +11,7 @@ function App() {
 			<main className="grow">
 				<Routes>
 					<Route path="/" element={<HomePage />} />
+					<Route path="/product/:id" element={<ProductPage />} />
 				</Routes>
 			</main>
 			<Footer />

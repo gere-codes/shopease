@@ -4,7 +4,7 @@ export const productBaseSchema = z.object({
 	id: z.uuid(),
 	name: z.string(),
 	price: z.number().nonnegative(),
-	images: z.array(z.string()).optional(),
+	images: z.array(z.string()),
 	quantity: z.number().nonnegative(),
 	description: z.string().optional().nullable(),
 	createdAt: z.string().optional().nullable(),
