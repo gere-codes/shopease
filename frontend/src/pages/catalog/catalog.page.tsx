@@ -1,0 +1,191 @@
+import { useState, useMemo } from 'react';
+import { useSearchParams, useParams } from 'react-router';
+import { FiSliders, FiX } from 'react-icons/fi';
+import { products } from '@data';
+import { ProductGrid } from '@common';
+
+const MOCK_PRODUCTS = products;
+
+export const CatalogPage = () => {
+	const [searchParams, setSearchParams] = useSearchParams();
+	const { category: urlCategory } = useParams();
+	const searchQuery = searchParams.get('q') || '';
+
+	const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+	const [selectedCategory, setSelectedCategory] = useState(urlCategory || 'all');
+	const [maxPrice, setMaxPrice] = useState(150);
+	const [sortBy, setSortBy] = useState('featured');
+
+	useMemo(() => {
+		if (urlCategory) setSelectedCategory(urlCategory);
+	}, [urlCategory]);
+
+	const filteredProducts = useMemo(() => {
+		return MOCK_PRODUCTS.filter((product) => {
+			// Match Search Query from Navbar
+			const matchesSearch = searchQuery ? product.name.toLowerCase().includes(searchQuery.toLowerCase()) : true;
+
+			// Match Category Sidebar Filter
+			const matchesCategory = selectedCategory === 'all' ? true : product.category === selectedCategory;
+
+			// Match Price Filter
+			const matchesPrice = product.price <= maxPrice;
+
+			return matchesSearch && matchesCategory && matchesPrice;
+		}).sort((a, b) => {
+			// Apply Sorting
+			if (sortBy === 'price-low') return a.price - b.price;
+			if (sortBy === 'price-high') return b.price - a.price;
+			return 0; // Default / Featured
+		});
+	}, [searchQuery, selectedCategory, maxPrice, sortBy]);
+
+	const clearAllFilters = () => {
+		setSelectedCategory('all');
+		setMaxPrice(150);
+		setSearchParams({});
+	};
+
+	return (
+		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+			{/* Context Header */}
+			<div className="border-b border-gray-200 pb-5 mb-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+				<div>
+					<h1 className="text-3xl font-bold tracking-tight text-gray-900 capitalize">
+						{searchQuery ? `Results for "${searchQuery}"` : `${selectedCategory} Collection`}
+					</h1>
+					<p className="text-sm text-gray-500 mt-1">{filteredProducts.length} items found</p>
+				</div>
+
+				{/* Sorting and Mobile Filter Button */}
+				<div className="flex items-center justify-between md:justify-end gap-4">
+					<button
+						onClick={() => setIsMobileFilterOpen(true)}
+						className="md:hidden flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white"
+					>
+						<FiSliders /> Filters
+					</button>
+
+					<select
+						value={sortBy}
+						onChange={(e) => setSortBy(e.target.value)}
+						className="rounded-md border-gray-300 py-2 pl-3 pr-10 text-sm focus:border-gray-300 focus:outline-none focus:ring-gray-500 bg-white border"
+					>
+						<option value="featured">Sort by: Featured</option>
+						<option value="price-low">Price: Low to High</option>
+						<option value="price-high">Price: High to Low</option>
+					</select>
+				</div>
+			</div>
+
+			<div className="flex gap-8">
+				{/* Desktop Filter Sidebar */}
+				<aside className="hidden md:block w-64 shrink-0 border-r border-gray-100 pr-8">
+					<FilterControls
+						clearAllFilters={clearAllFilters}
+						maxPrice={maxPrice}
+						setMaxPrice={setMaxPrice}
+						setSelectedCategory={setSelectedCategory}
+						selectedCategory={selectedCategory}
+					/>
+				</aside>
+
+				{/* Main Product Display Section */}
+				<main className="flex-1">
+					{filteredProducts.length > 0 ? (
+						<ProductGrid products={filteredProducts} />
+					) : (
+						<div className="text-center py-24 bg-gray-50 rounded-xl border border-dashed">
+							<p className="text-gray-500 text-lg">No products match your current criteria.</p>
+							<button
+								onClick={clearAllFilters}
+								className="mt-3 text-gray-600 font-medium hover:underline"
+							>
+								Reset all parameters
+							</button>
+						</div>
+					)}
+				</main>
+			</div>
+
+			{/* Slide-out Mobile Filter Drawer Overlay */}
+			{isMobileFilterOpen && (
+				<div className="fixed inset-0 z-50 md:hidden flex justify-end">
+					{/* Backdrop */}
+					<div
+						className="fixed inset-0 bg-black/40 transition-opacity"
+						onClick={() => setIsMobileFilterOpen(false)}
+					/>
+
+					{/* Drawer Content */}
+					<div className="relative w-full max-w-xs bg-white h-full p-6 shadow-xl flex flex-col overflow-y-auto animate-slide-in">
+						<div className="flex items-center justify-between border-b pb-4 mb-6">
+							<h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+								<FiSliders /> Filters
+							</h2>
+							<button onClick={() => setIsMobileFilterOpen(false)} className="text-gray-500 p-1">
+								<FiX size={24} />
+							</button>
+						</div>
+						<FilterControls
+							clearAllFilters={clearAllFilters}
+							maxPrice={maxPrice}
+							setMaxPrice={setMaxPrice}
+							setSelectedCategory={setSelectedCategory}
+							selectedCategory={selectedCategory}
+						/>
+					</div>
+				</div>
+			)}
+		</div>
+	);
+};
+
+const FilterControls = ({ selectedCategory, setSelectedCategory, maxPrice, setMaxPrice, clearAllFilters }) => (
+	<div className="space-y-6">
+		<div>
+			<h3 className="font-semibold text-gray-900 mb-3">Categories</h3>
+			<div className="space-y-2">
+				{['all', 'men', 'women', 'kids'].map((cat) => (
+					<label
+						key={cat}
+						className="flex items-center gap-2 text-gray-600 capitalize cursor-pointer hover:text-gray-600"
+					>
+						<input
+							type="radio"
+							name="category"
+							checked={selectedCategory === cat}
+							onChange={() => setSelectedCategory(cat)}
+							className="text-gray-600 focus:ring-gray-500"
+						/>
+						{cat}
+					</label>
+				))}
+			</div>
+		</div>
+
+		<div>
+			<h3 className="font-semibold text-gray-900 mb-3">Max Price: ${maxPrice}</h3>
+			<input
+				type="range"
+				min="0"
+				max="150"
+				value={maxPrice}
+				onChange={(e) => setMaxPrice(Number(e.target.value))}
+				className="w-full accent-gray-600 cursor-pointer"
+				step={10}
+			/>
+			<div className="flex justify-between text-xs text-gray-500 mt-1">
+				<span>$0</span>
+				<span>$150</span>
+			</div>
+		</div>
+
+		<button
+			onClick={clearAllFilters}
+			className="w-full text-sm font-medium text-gray-600 hover:text-gray-800 border border-gray-200 py-2 rounded-md hover:bg-gray-50 transition"
+		>
+			Clear All Filters
+		</button>
+	</div>
+);

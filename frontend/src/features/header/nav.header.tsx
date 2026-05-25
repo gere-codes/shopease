@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink, Link, useNavigate } from 'react-router'; // Switched Link to NavLink for main nav
+import { NavLink, Link, useNavigate } from 'react-router';
 import { FiShoppingCart, FiSearch, FiMenu, FiX } from 'react-icons/fi';
 
 export const Nav = () => {
@@ -25,7 +25,6 @@ export const Nav = () => {
 		setIsMenuOpen(false);
 	};
 
-	// Active link styling helper
 	const linkStyles = ({ isActive }: { isActive: boolean }) =>
 		`transition-colors duration-200 block py-2 md:py-0 font-medium ${
 			isActive ? 'text-black ' : 'text-gray-600 hover:text-black'
