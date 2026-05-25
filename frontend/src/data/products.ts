@@ -1,32 +1,46 @@
+import type { TProduct } from '@/features/product';
 import image from '../assets/images/banner_2.jpg';
+import image2 from '../assets/images/banner_3.jpg';
 
-export const products = [
+export const products: TProduct[] = [
 	{
-		id: 1,
+		id: '1',
 		name: 'Product 1',
 		price: 100,
-		image: [image],
+		quantity: 2,
+		images: [image, image2],
 		description: 'lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+		createdAt: new Date().toDateString(),
+		updatedAt: new Date().toDateString(),
 	},
 	{
-		id: 2,
+		id: '2',
 		name: 'Product 2 Lorem',
 		price: 50,
-		image: [image],
+		quantity: 4,
+		images: [image2],
 		description: 'lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+		createdAt: new Date().toDateString(),
+		updatedAt: new Date().toDateString(),
 	},
 	{
-		id: 3,
+		id: '3',
 		name: 'Product 3',
 		price: 100,
-		image: [image],
+		quantity: 3,
+		images: [image],
 		description: 'lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+		createdAt: new Date().toDateString(),
+		updatedAt: new Date().toDateString(),
 	},
 	{
-		id: 4,
+		id: '4',
 		name: 'Product 4',
+		quantity: 11,
 		price: 90,
-		image: [image],
+		images: [image],
 		description: 'lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+		createdAt: new Date().toDateString(),
+		updatedAt: new Date().toDateString(),
 	},
 ];
