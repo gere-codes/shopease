@@ -3,7 +3,7 @@ import { apiResponseSchema, paginationSchema, type TBaseQuery } from '../schema'
 import type { ICollectionResult } from '@sharedTypes';
 import { publicInstance } from '@api';
 
-interface IBaseService<T, TQuery extends TBaseQuery = TBaseQuery> {
+export interface IBaseService<T, TQuery extends TBaseQuery = TBaseQuery> {
 	getCollection(params: TQuery): Promise<ICollectionResult<T>>;
 }
 export abstract class BaseService<T, TQuery extends TBaseQuery = TBaseQuery> implements IBaseService<T, TQuery> {
