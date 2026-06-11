@@ -46,7 +46,11 @@
 
 			// DATA
 			"@data": ["data/index"],
-			"@data/*": ["data/*"]
+			"@data/*": ["data/*"],
+
+			// Store
+			"@store": ["store/index"],
+			"@store/*": ["store/*"]
 		}
 	},
 	"include": ["src"]
