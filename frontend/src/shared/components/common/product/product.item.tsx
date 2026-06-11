@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 export const ProductItem = ({ product }: { product: TProduct }) => {
 	return (
-		<li key={product.id} className="">
+		<li>
 			<Link to={`/product/${product.id}`} className="overflow-hidden ">
 				<div className="block group relative  overflow-hidden">
 					<img
