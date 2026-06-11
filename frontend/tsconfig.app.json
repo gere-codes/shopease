@@ -44,6 +44,9 @@
 			"@schema": ["shared/schema/index"],
 			"@schema/*": ["shared/schema/*"],
 
+			"@api": ["shared/api/index"],
+			"@api/*": ["shared/api/*"],
+
 			"@common": ["shared/components/common/index"],
 			"@common/*": ["shared/components/common/*"],
 
