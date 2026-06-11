@@ -1,11 +1,6 @@
-export interface IPagination {
-	page: number;
-	limit: number;
-	totalPages: number;
-	totalItems: number;
-}
+import type { TPagination } from '../schema';
 
 export interface ICollectionResult<T> {
 	data: T[];
-	pagination?: IPagination;
+	pagination?: TPagination;
 }
