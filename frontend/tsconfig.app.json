@@ -18,7 +18,7 @@
 		/* Linting */
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"erasableSyntaxOnly": true,
+		"erasableSyntaxOnly": false,
 		"noFallthroughCasesInSwitch": true,
 
 		"baseUrl": "./src",
@@ -46,6 +46,9 @@
 
 			"@common": ["shared/components/common/index"],
 			"@common/*": ["shared/components/common/*"],
+
+			"@sharedTypes": ["shared/types/index"],
+			"@sharedTypes/*": ["shared/types/*"],
 
 			// DATA
 			"@data": ["data/index"],
