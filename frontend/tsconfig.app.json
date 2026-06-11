@@ -41,8 +41,11 @@
 			"@product/*": ["features/product/*"],
 
 			// SHARED
-			"@common": ["shared/components/common/index"],
-			"@common/*": ["shared/components/common/*"],
+			"@common": ["shared/schema/index"],
+			"@common/*": ["shared/schema/*"],
+
+			"@schema": ["shared/components/common/index"],
+			"@schema/*": ["shared/components/common/*"],
 
 			// DATA
 			"@data": ["data/index"],
