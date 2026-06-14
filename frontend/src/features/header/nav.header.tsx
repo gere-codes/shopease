@@ -10,11 +10,9 @@ export const Nav = () => {
 	const cartItemsCount = 3;
 
 	const navLinks = [
-		{ to: '/', label: 'Home' },
-		{ to: '/arrivals', label: 'New Arrivals' },
-		{ to: '/men', label: 'Men' },
-		{ to: '/women', label: 'Women' },
-		{ to: '/kids', label: 'Kids' },
+		{ to: '/men', label: 'Men', slug: 'men' },
+		{ to: '/women', label: 'Women', slug: 'women' },
+		{ to: '/kids', label: 'Kids', slug: 'kids' },
 	];
 
 	const handleSearchSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -42,7 +40,7 @@ export const Nav = () => {
 				<ul className="hidden md:flex gap-8">
 					{navLinks.map((link) => (
 						<li key={link.to}>
-							<NavLink to={link.to} className={linkStyles}>
+							<NavLink to={`catalog?category=${link.slug}`} className={linkStyles}>
 								{link.label}
 							</NavLink>
 						</li>
