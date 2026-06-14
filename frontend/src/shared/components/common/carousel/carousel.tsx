@@ -5,13 +5,20 @@ import 'swiper/css/pagination';
 import './style.css';
 
 import { Pagination } from 'swiper/modules';
+import type { CarouselItemProps } from './carousel.section';
 
-interface Props<T extends object> {
+interface Props<T extends { id: string | number; name: string; image: string }> {
 	items: T[];
-	component: React.ComponentType<T>;
+	baseUrl: string;
+	route: (item: T) => string;
+	component: React.ComponentType<CarouselItemProps<T>>;
 }
 
-export const Carousel = <T extends object>({ items, component: Component }: Props<T>) => {
+export const Carousel = <T extends { id: string | number; name: string; image: string }>({
+	items,
+	component: Component,
+	...props
+}: Props<T>) => {
 	return (
 		<Swiper
 			style={{ paddingBottom: 40 }}
@@ -27,9 +34,9 @@ export const Carousel = <T extends object>({ items, component: Component }: Prop
 				1024: { slidesPerView: 4, spaceBetween: 20 },
 			}}
 		>
-			{items.map((item, i) => (
-				<SwiperSlide key={i}>
-					<Component {...item} />
+			{items.map((item) => (
+				<SwiperSlide key={item.id}>
+					<Component item={item} {...props} />
 				</SwiperSlide>
 			))}
 		</Swiper>
