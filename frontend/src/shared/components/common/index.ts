@@ -8,3 +8,4 @@ export { CategoryCarousel } from './category/category.carousel';
 export { Container } from './container.common';
 export { ProductDetails } from './product/product.details';
 export { ProductImages } from './product/product.images';
+export { CarouselSection } from './carousel/carousel.section';

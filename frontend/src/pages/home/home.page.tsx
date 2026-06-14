@@ -1,5 +1,8 @@
 import { ProductArraivals, HeroSlides } from '@home';
-import { CategoryCarousel, PromoBanner } from '@common';
+import { CarouselSection, PromoBanner } from '@common';
+import { categories } from '@/shared/components/common/category/data';
+import { BASE_URL } from '@/shared/api';
+import type { TCategory } from '@/shared/schema/category.schema';
 
 export const HomePage = () => {
 	return (
@@ -8,7 +11,12 @@ export const HomePage = () => {
 			<HeroSlides />
 
 			{/* Categories */}
-			<CategoryCarousel />
+			<CarouselSection
+				items={categories}
+				title="Shop by Categories"
+				baseUrl={BASE_URL}
+				route={(item: TCategory) => `/catalog?category=${item.slug}`}
+			/>
 
 			{/* New Arrivales */}
 			<ProductArraivals />

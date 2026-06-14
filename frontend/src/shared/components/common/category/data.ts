@@ -2,24 +2,27 @@ import image from '../../../../assets/images/banner_3.jpg';
 
 export const categories = [
 	{
-		title: 'trending',
+		id: '1',
+		name: 'trending',
 		image: image,
-		path: '/trending',
+		slug: 'trending',
 	},
 	{
-		title: 'men',
+		id: '2',
+		name: 'men',
 		image: image,
-		path: '/men',
+		slug: 'men',
 	},
 	{
-		title: 'women',
+		id: '3',
+		name: 'women',
 		image: image,
-		path: '/women',
+		slug: 'women',
 	},
 	{
-		title: 'kids',
-
+		id: '4',
+		name: 'kids',
+		slug: 'kids',
 		image: image,
-		path: '/kids',
 	},
 ];

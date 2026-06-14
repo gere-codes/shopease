@@ -4,6 +4,7 @@ import { commonQuery, withOffset } from './query.schema';
 export const categorySchema = z.object({
 	id: z.uuid(),
 	name: z.string(),
+	slug: z.string(),
 	image: z.string(),
 	description: z.string().optional().nullable(),
 	createdAt: z.string().optional().nullable(),
