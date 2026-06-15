@@ -33,26 +33,13 @@ export const useFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
 	};
 };
 
-export const useQueryParams = <TQuery extends TBaseQuery = TBaseQuery>({
-	schema,
-	isPaginated = true,
-	limit = 10,
-}: {
-	schema: z.ZodSchema<TQuery>;
-	isPaginated?: boolean;
-	limit?: number;
-}) => {
+export const useUrlParams = <TQuery extends TBaseQuery = TBaseQuery>({ schema }: { schema: z.ZodSchema<TQuery> }) => {
 	const [searchParams, setSearchParams] = useSearchParams();
 
 	const filters = useMemo(() => {
 		try {
-			if (!isPaginated) {
-				const payload = { isPaginated, limit };
-				return schema.parse(payload);
-			} else {
-				const queryParams = Object.fromEntries(searchParams.entries());
-				return schema.parse(queryParams);
-			}
+			const urlFilters = Object.fromEntries(searchParams.entries());
+			return schema.parse(urlFilters);
 		} catch (error) {
 			console.error(error);
 			return schema.parse({});
@@ -62,26 +49,44 @@ export const useQueryParams = <TQuery extends TBaseQuery = TBaseQuery>({
 	return { filters, searchParams, setSearchParams };
 };
 
-export const useFilteredFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
-	isPaginated = true,
-	limit = 10,
+export const useUrlFilteredFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
 	schema,
 	thunkAction,
 	selectData,
 	selectStatus,
 }: {
-	limit?: number;
-	isPaginated?: boolean;
-	schema: z.ZodSchema<TQuery>;
+	schema: z.ZodType<TQuery>;
 	thunkAction: AsyncThunk<ICollectionResult<T>, TQuery, { rejectValue: string }>;
 	selectData: (state: RootState) => T[];
 	selectStatus: (state: RootState) => string;
 }) => {
-	const { filters } = useQueryParams({ schema, isPaginated, limit });
+	const { filters, searchParams, setSearchParams } = useUrlParams({ schema });
 	const { data, status } = useFetch({ filters, thunkAction, selectData, selectStatus });
 
 	return {
 		data,
 		status,
+		searchParams,
+		setSearchParams,
 	};
+};
+
+export const useStaticParams = <TQuery extends TBaseQuery>({
+	staticParams,
+	schema,
+}: {
+	staticParams: Partial<TQuery>;
+	schema: z.ZodType<TQuery>;
+}) => {
+	const filters = useMemo(() => {
+		try {
+			const staticFilters = schema.parse(staticParams);
+			return staticFilters;
+		} catch (error) {
+			console.error(error);
+			return schema.parse({});
+		}
+	}, [staticParams, schema]);
+
+	return filters;
 };
