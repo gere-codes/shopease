@@ -8,7 +8,7 @@ export const paginationSchema = z
 		totalPages: z.number(),
 		totalItems: z.number(),
 	})
-	.nullable();
+	.nullish();
 
 export type TPagination = z.infer<typeof paginationSchema>;
 
