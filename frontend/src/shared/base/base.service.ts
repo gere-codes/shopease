@@ -21,7 +21,7 @@ export abstract class BaseService<T, TQuery extends TBaseQuery = TBaseQuery> imp
 		const query = this.querySchema.parse(params);
 
 		const response = await publicInstance.get(`/public/${this.resource}`, { params: query });
-		const { data, pagination } = response.data.data;
+		const { data, pagination } = response.data;
 		// const validated = apiResponseSchema.parse(response.data.data);
 
 		return {

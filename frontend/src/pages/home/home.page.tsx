@@ -1,10 +1,24 @@
 import { ProductArraivals, HeroSlides } from '@home';
 import { CarouselSection, PromoBanner } from '@common';
-import { categories } from '@/shared/components/common/category/data';
 import { BASE_URL } from '@/shared/api';
-import type { TCategory } from '@/shared/schema/category.schema';
+import { categoryQuerySchema, type TCategory } from '@/shared/schema/category.schema';
+import { useAppDispatch, useAppSelector } from '@/shared/hooks/redux.hook';
+import { useEffect } from 'react';
+import { categoryThunks } from '@/shared/store/category/category.thunks';
+import { selectCategories } from '@/shared/store';
 
 export const HomePage = () => {
+	const dispatch = useAppDispatch();
+	const data = useAppSelector(selectCategories);
+	console.log(data);
+
+	useEffect(() => {
+		const parsed = categoryQuerySchema.parse({ isPaginated: false });
+		console.log(parsed);
+
+		dispatch(categoryThunks.getCollection(parsed));
+	}, []);
+
 	return (
 		<section>
 			{/* Slides */}
@@ -12,7 +26,7 @@ export const HomePage = () => {
 
 			{/* Categories */}
 			<CarouselSection
-				items={categories}
+				items={data}
 				title="Shop by Categories"
 				baseUrl={BASE_URL}
 				route={(item: TCategory) => `/catalog?category=${item.slug}`}
