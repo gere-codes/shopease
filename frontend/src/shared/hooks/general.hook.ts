@@ -88,5 +88,25 @@ export const useStaticParams = <TQuery extends TBaseQuery>({
 		}
 	}, [staticParams, schema]);
 
-	return filters;
+	return { filters };
+};
+
+export const useStaticFilteredFetch = <T, TQuery extends TBaseQuery>({
+	staticParams,
+	schema,
+	thunkAction,
+	selectData,
+	selectStatus,
+}: {
+	staticParams: Partial<TQuery>;
+	schema: z.ZodType<TQuery>;
+	thunkAction: AsyncThunk<ICollectionResult<T>, TQuery, { rejectValue: string }>;
+	selectData: (state: RootState) => T[];
+	selectStatus: (state: RootState) => string;
+}) => {
+	const { filters } = useStaticParams({ schema, staticParams });
+
+	const { data, status } = useFetch({ filters, thunkAction, selectData, selectStatus });
+
+	return { data, status };
 };
