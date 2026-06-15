@@ -1,17 +1,16 @@
 import { Link } from 'react-router';
 import { ProductGrid } from './product.grid';
-import type { TProduct } from '@product';
 import { Container } from '../container.common';
+import type { TProduct } from '@/shared/schema';
 interface Props {
 	title: string;
 	actionLabel?: string;
-	path?: string;
+	catalog: string;
+
+	baseUrl: string;
 	products: TProduct[];
-	limit?: number;
 }
-export const ProductSection = ({ title = 'Products', actionLabel, products, path, limit }: Props) => {
-	const safeLimit = typeof limit === 'number' && limit > 0 ? Math.floor(limit) : undefined;
-	const data = typeof safeLimit === 'number' ? products.slice(0, safeLimit) : products;
+export const ProductSection = ({ title = 'Products', actionLabel, products, catalog, baseUrl }: Props) => {
 	return (
 		<Container>
 			<section className="flex gap-2 items-end  justify-center">
@@ -19,7 +18,7 @@ export const ProductSection = ({ title = 'Products', actionLabel, products, path
 					<h4 className="text-4xl font-medium text-center ">{title}</h4>
 
 					{actionLabel && (
-						<Link to={path ?? '#'}>
+						<Link to={catalog}>
 							<small className="underline text-sm">{actionLabel}</small>
 						</Link>
 					)}
@@ -27,7 +26,7 @@ export const ProductSection = ({ title = 'Products', actionLabel, products, path
 			</section>
 
 			<section className="w-full mt-4">
-				<ProductGrid products={data} />
+				<ProductGrid products={products} baseUrl={baseUrl} />
 			</section>
 		</Container>
 	);

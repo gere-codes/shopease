@@ -1,13 +1,13 @@
-import type { TProduct } from '@/features/product';
+import type { TProduct } from '@/shared/schema';
 import { Link } from 'react-router';
 
-export const ProductItem = ({ product }: { product: TProduct }) => {
+export const ProductItem = ({ product, baseUrl }: { product: TProduct; baseUrl: string }) => {
 	return (
 		<li>
 			<Link to={`/product/${product.id}`} className="overflow-hidden ">
 				<div className="block group relative  overflow-hidden">
 					<img
-						src={product?.images[0]}
+						src={`${baseUrl}${product?.images[0]}`}
 						alt={product.name}
 						loading="lazy"
 						className="h-full object-cover aspect-square transition-transform duration-300 group-hover:scale-105"
