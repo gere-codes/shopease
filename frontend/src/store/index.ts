@@ -1,6 +1,7 @@
 import storage from 'redux-persist/es/storage';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
+import { categorySlice } from '@/shared/store/category/category.slice';
 
 const persistConfig = {
 	key: 'root',
@@ -8,7 +9,9 @@ const persistConfig = {
 	version: 1,
 };
 
-const rootReducer = combineReducers({});
+const rootReducer = combineReducers({
+	categories: categorySlice.reducer,
+});
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
