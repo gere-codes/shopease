@@ -5,6 +5,7 @@ import type { TBaseQuery } from '../schema';
 import type { ICollectionResult } from '../types';
 import { useSearchParams } from 'react-router';
 import type { RootState } from '@/store';
+import type z from 'zod';
 
 export const useFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
 	filter,
@@ -18,6 +19,7 @@ export const useFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
 	selectStatus: (state: RootState) => string;
 }) => {
 	const dispatch = useAppDispatch();
+
 	useEffect(() => {
 		dispatch(thunkAction(filter as unknown as TQuery & undefined));
 	}, [dispatch]);
@@ -31,13 +33,26 @@ export const useFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
 	};
 };
 
-export const useQueryParams = <TQuery extends TBaseQuery = TBaseQuery>({ schema }: { schema: z.ZodSchema<TQuery> }) => {
+export const useQueryParams = <TQuery extends TBaseQuery = TBaseQuery>({
+	schema,
+	isPaginated = true,
+	limit = 10,
+}: {
+	schema: z.ZodSchema<TQuery>;
+	isPaginated?: boolean;
+	limit?: number;
+}) => {
 	const [searchParams, setSearchParams] = useSearchParams();
 
 	const filters = useMemo(() => {
 		try {
-			const queryParams = Object.fromEntries(searchParams.entries());
-			return schema.parse(queryParams);
+			if (!isPaginated) {
+				const payload = { isPaginated, limit };
+				return schema.parse(payload);
+			} else {
+				const queryParams = Object.fromEntries(searchParams.entries());
+				return schema.parse(queryParams);
+			}
 		} catch (error) {
 			console.error(error);
 			return schema.parse({});
