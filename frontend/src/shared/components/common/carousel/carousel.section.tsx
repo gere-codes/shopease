@@ -37,7 +37,7 @@ const CarouselItem = <T extends { id: string | number; name: string; image: stri
 				<div className="group block relative rounded-full overflow-hidden">
 					<img
 						className="object-cover aspect-square transition-transform duration-300 group-hover:scale-105"
-						src={`${baseUrl}/${item?.image}`}
+						src={`${baseUrl}${item?.image}`}
 						alt={item.name}
 						loading="lazy"
 					/>
