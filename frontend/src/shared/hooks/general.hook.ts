@@ -8,12 +8,12 @@ import type { RootState } from '@/store';
 import type z from 'zod';
 
 export const useFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
-	filter,
+	filters,
 	thunkAction,
 	selectData,
 	selectStatus,
 }: {
-	filter: TQuery;
+	filters: TQuery;
 	thunkAction: AsyncThunk<ICollectionResult<T>, TQuery, { rejectValue: string }>;
 	selectData: (state: RootState) => T[];
 	selectStatus: (state: RootState) => string;
@@ -21,7 +21,7 @@ export const useFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		dispatch(thunkAction(filter as unknown as TQuery & undefined));
+		dispatch(thunkAction(filters as unknown as TQuery & undefined));
 	}, [dispatch]);
 
 	const data = useAppSelector(selectData);
@@ -60,4 +60,28 @@ export const useQueryParams = <TQuery extends TBaseQuery = TBaseQuery>({
 	}, [searchParams, schema]);
 
 	return { filters, searchParams, setSearchParams };
+};
+
+export const useFilteredFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
+	isPaginated = true,
+	limit = 10,
+	schema,
+	thunkAction,
+	selectData,
+	selectStatus,
+}: {
+	limit?: number;
+	isPaginated?: boolean;
+	schema: z.ZodSchema<TQuery>;
+	thunkAction: AsyncThunk<ICollectionResult<T>, TQuery, { rejectValue: string }>;
+	selectData: (state: RootState) => T[];
+	selectStatus: (state: RootState) => string;
+}) => {
+	const { filters } = useQueryParams({ schema, isPaginated, limit });
+	const { data, status } = useFetch({ filters, thunkAction, selectData, selectStatus });
+
+	return {
+		data,
+		status,
+	};
 };
