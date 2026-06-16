@@ -3,7 +3,7 @@ import { useSearchParams, useParams } from 'react-router';
 import { FiSliders, FiX } from 'react-icons/fi';
 import { ProductGrid } from '@common';
 import { useUrlFilteredFetch } from '@/shared/hooks';
-import { productQuerySchema } from '@/shared/schema';
+import { productQuerySchema, type TProduct, type TProductQuery } from '@/shared/schema';
 import { selectProductItems, selectProductStatus } from '@/shared/store/product/product.selector';
 import { productThunks } from '@/shared/store/product/product.thunks';
 import { BASE_URL } from '@/shared/api';
@@ -19,7 +19,7 @@ export const CatalogPage = () => {
 	const [sortBy, setSortBy] = useState('featured');
 
 	// Fetch's catalog
-	const { data } = useUrlFilteredFetch({
+	const { data, setParam, setParamsDebounce } = useUrlFilteredFetch<TProduct, TProductQuery>({
 		schema: productQuerySchema,
 		selectData: selectProductItems,
 		selectStatus: selectProductStatus,
@@ -76,6 +76,8 @@ export const CatalogPage = () => {
 						setMaxPrice={setMaxPrice}
 						setSelectedCategory={setSelectedCategory}
 						selectedCategory={selectedCategory}
+						setParam={setParam}
+						setParamsDebounce={setParamsDebounce}
 					/>
 				</aside>
 
@@ -122,6 +124,8 @@ export const CatalogPage = () => {
 							setMaxPrice={setMaxPrice}
 							setSelectedCategory={setSelectedCategory}
 							selectedCategory={selectedCategory}
+							setParam={setParam}
+							setParamsDebounce={setParamsDebounce}
 						/>
 					</div>
 				</div>
@@ -130,7 +134,15 @@ export const CatalogPage = () => {
 	);
 };
 
-const FilterControls = ({ selectedCategory, setSelectedCategory, maxPrice, setMaxPrice, clearAllFilters }) => (
+const FilterControls = ({
+	selectedCategory,
+	setSelectedCategory,
+	maxPrice,
+	setMaxPrice,
+	clearAllFilters,
+	setParam,
+	setParamsDebounce,
+}) => (
 	<div className="space-y-6">
 		<div>
 			<h3 className="font-semibold text-gray-900 mb-3">Categories</h3>
@@ -160,7 +172,10 @@ const FilterControls = ({ selectedCategory, setSelectedCategory, maxPrice, setMa
 				min="0"
 				max="150"
 				value={maxPrice}
-				onChange={(e) => setMaxPrice(Number(e.target.value))}
+				onChange={(e) => {
+					setMaxPrice(Number(e.target.value));
+					setParamsDebounce({ key: 'maxPrice', value: String(e.target.value) });
+				}}
 				className="w-full accent-gray-600 cursor-pointer"
 				step={10}
 			/>

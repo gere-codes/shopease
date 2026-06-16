@@ -37,7 +37,6 @@ export const createBaseSlice = <T, TQuery extends TBaseQuery>(
 		pagination: {
 			limit: 4,
 			page: 1,
-			total: 1,
 			totalItems: 1,
 			totalPages: 1,
 		},
