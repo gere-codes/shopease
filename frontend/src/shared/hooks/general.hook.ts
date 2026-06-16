@@ -1,5 +1,5 @@
 import type { AsyncThunk } from '@reduxjs/toolkit';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from './redux.hook';
 import type { TBaseQuery } from '../schema';
 import type { ICollectionResult } from '../types';
@@ -51,7 +51,7 @@ export const useFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
 
 	useEffect(() => {
 		dispatch(thunkAction(filters as unknown as TQuery & undefined));
-	}, [dispatch, filters]);
+	}, [dispatch, filters, thunkAction]);
 
 	const data = useAppSelector(selectData);
 	const status = useAppSelector(selectStatus);
@@ -75,8 +75,8 @@ export const useUrlParams = <TQuery extends TBaseQuery = TBaseQuery>({ schema }:
 		}
 	}, [searchParams, schema]);
 
-	// Dynamic setter
-	const setParam = <K extends Extract<keyof TQuery, string>>(key: K, value: TQuery[K]) => {
+	// Sets params immediately
+	const setParam = <K extends Extract<keyof TQuery, string>>({ key, value }: { key: K; value: TQuery[K] }) => {
 		setSearchParams((prev) => {
 			const newParams = new URLSearchParams(prev);
 
@@ -90,7 +90,10 @@ export const useUrlParams = <TQuery extends TBaseQuery = TBaseQuery>({ schema }:
 		});
 	};
 
-	return { filters, searchParams, setSearchParams, setParam };
+	// Sets params with debounce
+	const setParamsDebounce = useDebouncedCallback(setParam, 300);
+
+	return { filters, searchParams, setSearchParams, setParam, setParamsDebounce };
 };
 
 export const useUrlFilteredFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
@@ -104,7 +107,7 @@ export const useUrlFilteredFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
 	selectData: (state: RootState) => T[];
 	selectStatus: (state: RootState) => string;
 }) => {
-	const { filters, searchParams, setSearchParams, setParam } = useUrlParams({ schema });
+	const { filters, searchParams, setSearchParams, setParam, setParamsDebounce } = useUrlParams({ schema });
 	const { data, status } = useFetch({ filters, thunkAction, selectData, selectStatus });
 
 	return {
@@ -113,6 +116,7 @@ export const useUrlFilteredFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
 		searchParams,
 		setSearchParams,
 		setParam,
+		setParamsDebounce,
 	};
 };
 
