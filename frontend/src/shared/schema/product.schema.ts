@@ -20,6 +20,8 @@ export const productQuerySchema = commonQuery
 	.extend({
 		categoryId: z.uuid().optional(),
 		sort: z.enum(['createdAt', 'price', 'name']).default('createdAt'),
+		minPrice: z.coerce.number().min(0).optional().default(0),
+		maxPrice: z.coerce.number().min(0).optional(),
 	})
 	.transform(withOffset);
 

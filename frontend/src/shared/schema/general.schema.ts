@@ -4,7 +4,6 @@ export const paginationSchema = z
 	.object({
 		page: z.number(),
 		limit: z.number(),
-		total: z.number(),
 		totalPages: z.number(),
 		totalItems: z.number(),
 	})
