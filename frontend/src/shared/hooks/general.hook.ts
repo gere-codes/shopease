@@ -22,7 +22,7 @@ export const useFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
 
 	useEffect(() => {
 		dispatch(thunkAction(filters as unknown as TQuery & undefined));
-	}, [dispatch]);
+	}, [dispatch, filters]);
 
 	const data = useAppSelector(selectData);
 	const status = useAppSelector(selectStatus);
@@ -46,7 +46,22 @@ export const useUrlParams = <TQuery extends TBaseQuery = TBaseQuery>({ schema }:
 		}
 	}, [searchParams, schema]);
 
-	return { filters, searchParams, setSearchParams };
+	// Dynamic setter
+	const setParam = <K extends Extract<keyof TQuery, string>>(key: K, value: TQuery[K]) => {
+		setSearchParams((prev) => {
+			const newParams = new URLSearchParams(prev);
+
+			if (value === undefined || value === null || value === '') {
+				newParams.delete(key);
+			} else {
+				newParams.set(key, String(value));
+			}
+
+			return newParams;
+		});
+	};
+
+	return { filters, searchParams, setSearchParams, setParam };
 };
 
 export const useUrlFilteredFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
@@ -60,7 +75,7 @@ export const useUrlFilteredFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
 	selectData: (state: RootState) => T[];
 	selectStatus: (state: RootState) => string;
 }) => {
-	const { filters, searchParams, setSearchParams } = useUrlParams({ schema });
+	const { filters, searchParams, setSearchParams, setParam } = useUrlParams({ schema });
 	const { data, status } = useFetch({ filters, thunkAction, selectData, selectStatus });
 
 	return {
@@ -68,6 +83,7 @@ export const useUrlFilteredFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
 		status,
 		searchParams,
 		setSearchParams,
+		setParam,
 	};
 };
 

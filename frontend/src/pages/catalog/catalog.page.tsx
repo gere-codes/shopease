@@ -1,10 +1,12 @@
 import { useState, useMemo } from 'react';
 import { useSearchParams, useParams } from 'react-router';
 import { FiSliders, FiX } from 'react-icons/fi';
-import { products } from '@data';
 import { ProductGrid } from '@common';
-
-const MOCK_PRODUCTS = products;
+import { useUrlFilteredFetch } from '@/shared/hooks';
+import { productQuerySchema } from '@/shared/schema';
+import { selectProductItems, selectProductStatus } from '@/shared/store/product/product.selector';
+import { productThunks } from '@/shared/store/product/product.thunks';
+import { BASE_URL } from '@/shared/api';
 
 export const CatalogPage = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -16,29 +18,17 @@ export const CatalogPage = () => {
 	const [maxPrice, setMaxPrice] = useState(150);
 	const [sortBy, setSortBy] = useState('featured');
 
+	// Fetch's catalog
+	const { data } = useUrlFilteredFetch({
+		schema: productQuerySchema,
+		selectData: selectProductItems,
+		selectStatus: selectProductStatus,
+		thunkAction: productThunks.getCollection,
+	});
+
 	useMemo(() => {
 		if (urlCategory) setSelectedCategory(urlCategory);
 	}, [urlCategory]);
-
-	const filteredProducts = useMemo(() => {
-		return MOCK_PRODUCTS.filter((product) => {
-			// Match Search Query from Navbar
-			const matchesSearch = searchQuery ? product.name.toLowerCase().includes(searchQuery.toLowerCase()) : true;
-
-			// Match Category Sidebar Filter
-			const matchesCategory = selectedCategory === 'all' ? true : product.category === selectedCategory;
-
-			// Match Price Filter
-			const matchesPrice = product.price <= maxPrice;
-
-			return matchesSearch && matchesCategory && matchesPrice;
-		}).sort((a, b) => {
-			// Apply Sorting
-			if (sortBy === 'price-low') return a.price - b.price;
-			if (sortBy === 'price-high') return b.price - a.price;
-			return 0; // Default / Featured
-		});
-	}, [searchQuery, selectedCategory, maxPrice, sortBy]);
 
 	const clearAllFilters = () => {
 		setSelectedCategory('all');
@@ -54,7 +44,6 @@ export const CatalogPage = () => {
 					<h1 className="text-3xl font-bold tracking-tight text-gray-900 capitalize">
 						{searchQuery ? `Results for "${searchQuery}"` : `${selectedCategory} Collection`}
 					</h1>
-					<p className="text-sm text-gray-500 mt-1">{filteredProducts.length} items found</p>
 				</div>
 
 				{/* Sorting and Mobile Filter Button */}
@@ -92,8 +81,8 @@ export const CatalogPage = () => {
 
 				{/* Main Product Display Section */}
 				<main className="flex-1">
-					{filteredProducts.length > 0 ? (
-						<ProductGrid products={filteredProducts} />
+					{data.length > 0 ? (
+						<ProductGrid products={data} baseUrl={BASE_URL} />
 					) : (
 						<div className="text-center py-24 bg-gray-50 rounded-xl border border-dashed">
 							<p className="text-gray-500 text-lg">No products match your current criteria.</p>
