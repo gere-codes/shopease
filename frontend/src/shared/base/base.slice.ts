@@ -54,6 +54,20 @@ export const createBaseSlice = <T, TQuery extends TBaseQuery>(
 		},
 		extraReducers: (builder) => {
 			builder
+				// get by id
+				.addCase(thunks.getById.pending, (state) => {
+					state.item.status = 'pending';
+					state.item.error = null;
+				})
+				.addCase(thunks.getById.fulfilled, (state, action) => {
+					state.item.status = 'succeeded';
+					state.item.data = action.payload as typeof state.item.data;
+				})
+				.addCase(thunks.getById.rejected, (state, action) => {
+					state.item.status = 'failed';
+					state.item.error = action.payload || 'Unknown error';
+				})
+				// get collecion
 				.addCase(thunks.getCollection.pending, (state) => {
 					state.items.status = 'pending';
 					state.items.error = null;
