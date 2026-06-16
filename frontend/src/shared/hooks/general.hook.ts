@@ -7,6 +7,35 @@ import { useSearchParams } from 'react-router';
 import type { RootState } from '@/store';
 import type z from 'zod';
 
+export const useDebouncedCallback = <TArgs extends unknown[]>(
+	callback: (...args: TArgs) => void,
+	delay: number = 300,
+) => {
+	const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+	const debouncedCallback = useCallback(
+		(...args: TArgs) => {
+			if (timeoutRef.current) {
+				clearTimeout(timeoutRef.current);
+			}
+			timeoutRef.current = setTimeout(() => {
+				callback(...args);
+			}, delay);
+		},
+		[callback, delay],
+	);
+
+	useEffect(() => {
+		return () => {
+			if (timeoutRef.current) {
+				clearTimeout(timeoutRef.current);
+			}
+		};
+	}, []);
+
+	return debouncedCallback;
+};
+
 export const useFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
 	filters,
 	thunkAction,
