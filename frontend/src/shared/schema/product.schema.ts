@@ -3,22 +3,27 @@ import { commonQuery, withOffset } from './query.schema';
 
 export const productSchema = z.object({
 	id: z.uuid(),
-	name: z.string(),
-	price: z.number().nonnegative(),
-	images: z.array(z.string()),
-	quantity: z.number().nonnegative(),
-	categoryId: z.string(),
-	category: z.string(),
-	description: z.string().optional().nullable(),
-	createdAt: z.string().optional().nullable(),
-	updatedAt: z.string().optional().nullable(),
+	name: z.string().min(2).max(100),
+	price: z.coerce.number().positive(),
+	description: z.string().max(1000).nullable().optional(),
+	quantity: z.coerce.number().int().nonnegative(),
+	category: z.object({
+		id: z.uuid(),
+		name: z.string(),
+		slug: z.string(),
+	}),
+	categoryId: z.uuid(),
+	sku: z.string().min(3).max(36),
+	images: z.array(z.string()).optional().nullable(),
+	createdAt: z.coerce.date().transform((v) => v.toISOString()),
+	updatedAt: z.coerce.date().transform((v) => v.toISOString()),
 });
 
 export type TProduct = z.infer<typeof productSchema>;
 
 export const productQuerySchema = commonQuery
 	.extend({
-		categoryId: z.uuid().optional(),
+		category: z.string().optional(),
 		sort: z.enum(['createdAt', 'price', 'name']).default('createdAt'),
 		minPrice: z.coerce.number().min(0).optional().default(0),
 		maxPrice: z.coerce.number().min(0).optional(),
