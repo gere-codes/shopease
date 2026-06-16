@@ -1,16 +1,15 @@
 import { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import type { TProduct } from '@product';
-
 import { Navigation, Thumbs, FreeMode } from 'swiper/modules';
 
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
+import type { TProduct } from '@/shared/schema';
 
-export const ProductImages = ({ product }: { product: NonNullable<TProduct> }) => {
+export const ProductImages = ({ product, baseUrl }: { product: NonNullable<TProduct>; baseUrl: string }) => {
 	const [thumbsSwiper, setThumbsSwiper] = useState(null);
 	return (
 		<section className="w-full md:w-1/2 min-w-0 overflow-hidden">
@@ -28,7 +27,11 @@ export const ProductImages = ({ product }: { product: NonNullable<TProduct> }) =
 			>
 				{product?.images?.map((img, index) => (
 					<SwiperSlide key={`main-${index}`} className="flex items-center justify-center">
-						<img src={img} alt="Product display" className="w-full h-full object-cover aspect-square" />
+						<img
+							src={`${baseUrl}${img}`}
+							alt="Product display"
+							className="w-full h-full object-cover aspect-square"
+						/>
 					</SwiperSlide>
 				))}
 			</Swiper>
@@ -46,7 +49,7 @@ export const ProductImages = ({ product }: { product: NonNullable<TProduct> }) =
 				{product?.images?.map((img, index) => (
 					<SwiperSlide key={`thumb-${index}`} className="cursor-pointer">
 						<div className="aspect-square bg-gray-100 rounded border border-transparent overflow-hidden [[data-swiper-slide-index]].swiper-slide-thumb-active:&:border-black">
-							<img src={img} alt="Product thumb" className="w-full h-full object-cover" />
+							<img src={`${baseUrl}${img}`} alt="Product thumb" className="w-full h-full object-cover" />
 						</div>
 					</SwiperSlide>
 				))}
