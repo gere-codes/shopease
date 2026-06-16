@@ -6,6 +6,7 @@ import { isAxiosError } from 'axios';
 
 export interface BaseThunksResult<T, TQuery> {
 	getCollection: AsyncThunk<ICollectionResult<T>, TQuery, { rejectValue: string }>;
+	getById: AsyncThunk<T, string, { rejectValue: string }>;
 }
 
 export const handleThunkError = (error: unknown, defaultMessage: string): string => {
@@ -34,6 +35,16 @@ export const createBaseThunks = <
 			}
 		},
 	);
+	const getById = createAsyncThunk<T, string, { rejectValue: string }>(
+		`${resource}/getById`,
+		async (id, { rejectWithValue }) => {
+			try {
+				return await service.getById(id);
+			} catch (error) {
+				return rejectWithValue(handleThunkError(error, `Error fetching ${resource}s`));
+			}
+		},
+	);
 
-	return { getCollection };
+	return { getCollection, getById };
 };
