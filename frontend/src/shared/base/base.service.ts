@@ -5,6 +5,7 @@ import { publicInstance } from '@api';
 
 export interface IBaseService<T, TQuery extends TBaseQuery = TBaseQuery> {
 	getCollection(params: TQuery): Promise<ICollectionResult<T>>;
+	getById(id: string): Promise<T>;
 }
 export abstract class BaseService<T, TQuery extends TBaseQuery = TBaseQuery> implements IBaseService<T, TQuery> {
 	constructor(
@@ -17,6 +18,12 @@ export abstract class BaseService<T, TQuery extends TBaseQuery = TBaseQuery> imp
 		return data;
 	}
 
+	async getById(id: string): Promise<T> {
+		const response = await publicInstance.get(`/public/${this.resource}/${id}`);
+		const { data } = response.data;
+
+		return this.schema.parse(data);
+	}
 	async getCollection(params: TQuery): Promise<ICollectionResult<T>> {
 		const query = this.querySchema.parse(params);
 
