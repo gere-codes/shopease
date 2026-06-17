@@ -1,25 +1,32 @@
-import { useState } from 'react';
-import { NavLink, Link, useNavigate } from 'react-router';
+import { useEffect, useState } from 'react';
+import { NavLink, Link, useNavigate, useSearchParams } from 'react-router';
 import { FiShoppingCart, FiSearch, FiMenu, FiX } from 'react-icons/fi';
 
+const navLinks = [
+	{ to: '/men', label: 'Men', slug: 'men' },
+	{ to: '/women', label: 'Women', slug: 'women' },
+	{ to: '/kids', label: 'Kids', slug: 'kids' },
+];
+const cartItemsCount = 3;
 export const Nav = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [searchQuery, setSearchQuery] = useState('');
+	const [searchParams, setSearchParams] = useSearchParams();
 	const navigate = useNavigate();
 
-	const cartItemsCount = 3;
+	useEffect(() => {
+		const initials = () => {
+			setSearchQuery(searchParams.get('search') || '');
+		};
 
-	const navLinks = [
-		{ to: '/men', label: 'Men', slug: 'men' },
-		{ to: '/women', label: 'Women', slug: 'women' },
-		{ to: '/kids', label: 'Kids', slug: 'kids' },
-	];
+		initials();
+	}, [searchParams]);
 
 	const handleSearchSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		if (!searchQuery.trim()) return;
 
-		navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+		navigate(`/catalog?search=${encodeURIComponent(searchQuery)}`);
 		setIsMenuOpen(false);
 	};
 
