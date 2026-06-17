@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useSearchParams } from 'react-router';
 import { FiSliders, FiX } from 'react-icons/fi';
 import { ProductGrid } from '@common';
 import { useUrlFilteredFetch } from '@/shared/hooks';
@@ -10,14 +9,11 @@ import { BASE_URL } from '@/shared/api';
 import { useCatalogActions } from '@/features/catalog/catalog.hook';
 
 export const CatalogPage = () => {
-	const [searchParams, setSearchParams] = useSearchParams();
-	const searchQuery = searchParams.get('search') || '';
-
 	const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 	const [sortBy, setSortBy] = useState('featured');
 
 	// Fetch's catalog
-	const { data, filters, setParam, setParamsDebounce } = useUrlFilteredFetch<TProduct, TProductQuery>({
+	const { data, filters, setParam, setParamsDebounce, searchParams } = useUrlFilteredFetch<TProduct, TProductQuery>({
 		schema: productQuerySchema,
 		selectData: selectProductItems,
 		selectStatus: selectProductStatus,
@@ -32,7 +28,9 @@ export const CatalogPage = () => {
 			<div className="border-b border-gray-200 pb-5 mb-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
 				<div>
 					<h1 className="text-3xl font-bold tracking-tight text-gray-900 capitalize">
-						{searchQuery ? `Results for "${searchQuery}"` : `${params?.category} Collection`}
+						{searchParams.get('search')
+							? `Results for "${searchParams.get('search')}"`
+							: `${params?.category} Collection`}
 					</h1>
 				</div>
 
