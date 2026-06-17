@@ -1,48 +1,55 @@
-import type { TProductQuery } from '@/shared/schema';
+import { useUrlParams } from '@/shared/hooks';
+import { productQuerySchema, type TProductQuery } from '@/shared/schema';
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router';
-interface Props<K extends Extract<keyof TProductQuery, string>> {
-	filters: TProductQuery;
-	setParam: ({ key, value }: { key: K; value: TProductQuery[K] }) => void;
-	setParamsDebounce: any;
-}
-export const useCatalogActions = <K extends Extract<keyof TProductQuery, string>>({
-	filters,
-	setParam,
-	setParamsDebounce,
-}: Props<K>) => {
-	const [searchParams, setSearchParams] = useSearchParams();
-	const [params, setParams] = useState<TProductQuery | null>(filters);
+
+type SortKey = 'createdAt' | 'price-low' | 'price-high';
+type SortConfig = {
+	sort: TProductQuery['sort'];
+	order: TProductQuery['order'];
+};
+
+const sortMap: Record<SortKey, SortConfig> = {
+	createdAt: { sort: 'createdAt', order: 'desc' },
+	'price-low': { sort: 'price', order: 'asc' },
+	'price-high': { sort: 'price', order: 'desc' },
+};
+
+export const useCatalogActions = () => {
+	const { filters, setParam, setParamsDebounce, searchParams, clearAllParams } = useUrlParams<TProductQuery>({
+		schema: productQuerySchema,
+	});
+
+	const [localFilters, setLocalFilters] = useState<TProductQuery>(filters);
+	console.log('re-rendered', localFilters?.sort, localFilters?.order);
 
 	useEffect(() => {
-		setParams(filters || null);
+		setLocalFilters(filters);
 	}, [filters]);
 
 	const handleChanges = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
 		const { name, value } = e.target;
 
-		setParams((prev) => {
-			const val = name === 'maxPrice' ? Number(value) : value;
-			return {
-				...prev,
-				[name]: val,
-			};
-		});
+		const val = name === 'maxPrice' ? Number(value) : value;
+
+		setLocalFilters((prev) => ({
+			...prev,
+			[name]: val,
+		}));
 
 		if (name === 'maxPrice') {
-			setParamsDebounce({ key: name, value: String(value) });
+			setParamsDebounce({ [name]: val });
+		} else if (name === 'sort') {
+			const sort = sortMap[value as SortKey];
+			setParam(sort);
 		} else {
-			setParam({ key: name, value });
+			setParam({ [name]: val });
 		}
-	};
-
-	const clearAllFilters = () => {
-		setSearchParams({});
 	};
 
 	return {
 		handleChanges,
-		params,
-		clearAllFilters,
+		localFilters,
+		clearAllFilters: clearAllParams,
+		searchParams,
 	};
 };
