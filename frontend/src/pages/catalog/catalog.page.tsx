@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react';
-import { useSearchParams, useParams } from 'react-router';
+import { useState } from 'react';
+import { useSearchParams } from 'react-router';
 import { FiSliders, FiX } from 'react-icons/fi';
 import { ProductGrid } from '@common';
 import { useUrlFilteredFetch } from '@/shared/hooks';
@@ -7,34 +7,24 @@ import { productQuerySchema, type TProduct, type TProductQuery } from '@/shared/
 import { selectProductItems, selectProductStatus } from '@/shared/store/product/product.selector';
 import { productThunks } from '@/shared/store/product/product.thunks';
 import { BASE_URL } from '@/shared/api';
+import { useCatalogActions } from '@/features/catalog/catalog.hook';
 
 export const CatalogPage = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
-	const { category: urlCategory } = useParams();
-	const searchQuery = searchParams.get('q') || '';
+	const searchQuery = searchParams.get('search') || '';
 
 	const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
-	const [selectedCategory, setSelectedCategory] = useState(urlCategory || 'all');
-	const [maxPrice, setMaxPrice] = useState(150);
 	const [sortBy, setSortBy] = useState('featured');
 
 	// Fetch's catalog
-	const { data, setParam, setParamsDebounce } = useUrlFilteredFetch<TProduct, TProductQuery>({
+	const { data, filters, setParam, setParamsDebounce } = useUrlFilteredFetch<TProduct, TProductQuery>({
 		schema: productQuerySchema,
 		selectData: selectProductItems,
 		selectStatus: selectProductStatus,
 		thunkAction: productThunks.getCollection,
 	});
 
-	useMemo(() => {
-		if (urlCategory) setSelectedCategory(urlCategory);
-	}, [urlCategory]);
-
-	const clearAllFilters = () => {
-		setSelectedCategory('all');
-		setMaxPrice(150);
-		setSearchParams({});
-	};
+	const { handleChanges, params, clearAllFilters } = useCatalogActions({ filters, setParam, setParamsDebounce });
 
 	return (
 		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -42,7 +32,7 @@ export const CatalogPage = () => {
 			<div className="border-b border-gray-200 pb-5 mb-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
 				<div>
 					<h1 className="text-3xl font-bold tracking-tight text-gray-900 capitalize">
-						{searchQuery ? `Results for "${searchQuery}"` : `${selectedCategory} Collection`}
+						{searchQuery ? `Results for "${searchQuery}"` : `${params?.category} Collection`}
 					</h1>
 				</div>
 
@@ -70,15 +60,7 @@ export const CatalogPage = () => {
 			<div className="flex gap-8">
 				{/* Desktop Filter Sidebar */}
 				<aside className="hidden md:block w-64 shrink-0 border-r border-gray-100 pr-8">
-					<FilterControls
-						clearAllFilters={clearAllFilters}
-						maxPrice={maxPrice}
-						setMaxPrice={setMaxPrice}
-						setSelectedCategory={setSelectedCategory}
-						selectedCategory={selectedCategory}
-						setParam={setParam}
-						setParamsDebounce={setParamsDebounce}
-					/>
+					<FilterControls params={params} handleChanges={handleChanges} clearAllFilters={clearAllFilters} />
 				</aside>
 
 				{/* Main Product Display Section */}
@@ -119,13 +101,9 @@ export const CatalogPage = () => {
 							</button>
 						</div>
 						<FilterControls
+							params={params}
+							handleChanges={handleChanges}
 							clearAllFilters={clearAllFilters}
-							maxPrice={maxPrice}
-							setMaxPrice={setMaxPrice}
-							setSelectedCategory={setSelectedCategory}
-							selectedCategory={selectedCategory}
-							setParam={setParam}
-							setParamsDebounce={setParamsDebounce}
 						/>
 					</div>
 				</div>
@@ -135,13 +113,12 @@ export const CatalogPage = () => {
 };
 
 const FilterControls = ({
-	selectedCategory,
-	setSelectedCategory,
-	maxPrice,
-	setMaxPrice,
 	clearAllFilters,
-	setParam,
-	setParamsDebounce,
+	params,
+	handleChanges,
+}: {
+	params: TProductQuery;
+	handleChanges: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement, Element>) => void;
 }) => (
 	<div className="space-y-6">
 		<div>
@@ -155,8 +132,9 @@ const FilterControls = ({
 						<input
 							type="radio"
 							name="category"
-							checked={selectedCategory === cat}
-							onChange={() => setSelectedCategory(cat)}
+							value={cat}
+							checked={params.category === cat}
+							onChange={handleChanges}
 							className="text-gray-600 focus:ring-gray-500"
 						/>
 						{cat}
@@ -166,22 +144,20 @@ const FilterControls = ({
 		</div>
 
 		<div>
-			<h3 className="font-semibold text-gray-900 mb-3">Max Price: ${maxPrice}</h3>
+			<h3 className="font-semibold text-gray-900 mb-3">Max Price: ${params.maxPrice}</h3>
 			<input
+				name="maxPrice"
 				type="range"
 				min="0"
-				max="150"
-				value={maxPrice}
-				onChange={(e) => {
-					setMaxPrice(Number(e.target.value));
-					setParamsDebounce({ key: 'maxPrice', value: String(e.target.value) });
-				}}
+				max="300"
+				value={params.maxPrice}
+				onChange={handleChanges}
 				className="w-full accent-gray-600 cursor-pointer"
 				step={10}
 			/>
 			<div className="flex justify-between text-xs text-gray-500 mt-1">
 				<span>$0</span>
-				<span>$150</span>
+				<span>$300</span>
 			</div>
 		</div>
 

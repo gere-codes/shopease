@@ -111,6 +111,7 @@ export const useUrlFilteredFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
 	const { data, status } = useFetch({ filters, thunkAction, selectData, selectStatus });
 
 	return {
+		filters,
 		data,
 		status,
 		searchParams,

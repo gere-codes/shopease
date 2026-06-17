@@ -23,10 +23,10 @@ export type TProduct = z.infer<typeof productSchema>;
 
 export const productQuerySchema = commonQuery
 	.extend({
-		category: z.string().optional(),
+		category: z.string().optional().default('all'),
 		sort: z.enum(['createdAt', 'price', 'name']).default('createdAt'),
 		minPrice: z.coerce.number().min(0).optional().default(0),
-		maxPrice: z.coerce.number().min(0).optional(),
+		maxPrice: z.coerce.number().nonnegative().max(300).optional().default(300),
 	})
 	.transform(withOffset);
 
