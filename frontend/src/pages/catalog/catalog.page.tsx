@@ -10,17 +10,17 @@ import { useCatalogActions } from '@/features/catalog/catalog.hook';
 
 export const CatalogPage = () => {
 	const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
-	const [sortBy, setSortBy] = useState('featured');
 
 	// Fetch's catalog
-	const { data, filters, setParam, setParamsDebounce, searchParams } = useUrlFilteredFetch<TProduct, TProductQuery>({
+	const { data } = useUrlFilteredFetch<TProduct, TProductQuery>({
 		schema: productQuerySchema,
 		selectData: selectProductItems,
 		selectStatus: selectProductStatus,
 		thunkAction: productThunks.getCollection,
 	});
 
-	const { handleChanges, params, clearAllFilters } = useCatalogActions({ filters, setParam, setParamsDebounce });
+	// Handle catalog events
+	const { handleChanges, localFilters, clearAllFilters, searchParams } = useCatalogActions();
 
 	return (
 		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -28,9 +28,9 @@ export const CatalogPage = () => {
 			<div className="border-b border-gray-200 pb-5 mb-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
 				<div>
 					<h1 className="text-3xl font-bold tracking-tight text-gray-900 capitalize">
-						{searchParams.get('search')
-							? `Results for "${searchParams.get('search')}"`
-							: `${params?.category} Collection`}
+						{searchParams?.get('search')
+							? `Results for "${searchParams?.get('search')}"`
+							: `${localFilters?.category} Collection`}
 					</h1>
 				</div>
 
@@ -44,11 +44,12 @@ export const CatalogPage = () => {
 					</button>
 
 					<select
-						value={sortBy}
-						onChange={(e) => setSortBy(e.target.value)}
+						value={localFilters?.sort}
+						name="sort"
+						onChange={handleChanges}
 						className="rounded-md border-gray-300 py-2 pl-3 pr-10 text-sm focus:border-gray-300 focus:outline-none focus:ring-gray-500 bg-white border"
 					>
-						<option value="featured">Sort by: Featured</option>
+						<option value="createdAt">Sort by: Featured</option>
 						<option value="price-low">Price: Low to High</option>
 						<option value="price-high">Price: High to Low</option>
 					</select>
@@ -58,7 +59,11 @@ export const CatalogPage = () => {
 			<div className="flex gap-8">
 				{/* Desktop Filter Sidebar */}
 				<aside className="hidden md:block w-64 shrink-0 border-r border-gray-100 pr-8">
-					<FilterControls params={params} handleChanges={handleChanges} clearAllFilters={clearAllFilters} />
+					<FilterControls
+						filters={localFilters}
+						handleChanges={handleChanges}
+						clearAllFilters={clearAllFilters}
+					/>
 				</aside>
 
 				{/* Main Product Display Section */}
@@ -99,7 +104,7 @@ export const CatalogPage = () => {
 							</button>
 						</div>
 						<FilterControls
-							params={params}
+							filters={localFilters}
 							handleChanges={handleChanges}
 							clearAllFilters={clearAllFilters}
 						/>
@@ -112,11 +117,12 @@ export const CatalogPage = () => {
 
 const FilterControls = ({
 	clearAllFilters,
-	params,
+	filters,
 	handleChanges,
 }: {
-	params: TProductQuery;
+	filters: TProductQuery;
 	handleChanges: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement, Element>) => void;
+	clearAllFilters: () => void;
 }) => (
 	<div className="space-y-6">
 		<div>
@@ -131,7 +137,7 @@ const FilterControls = ({
 							type="radio"
 							name="category"
 							value={cat}
-							checked={params.category === cat}
+							checked={filters?.category === cat}
 							onChange={handleChanges}
 							className="text-gray-600 focus:ring-gray-500"
 						/>
@@ -142,13 +148,13 @@ const FilterControls = ({
 		</div>
 
 		<div>
-			<h3 className="font-semibold text-gray-900 mb-3">Max Price: ${params.maxPrice}</h3>
+			<h3 className="font-semibold text-gray-900 mb-3">Max Price: ${filters.maxPrice}</h3>
 			<input
 				name="maxPrice"
 				type="range"
 				min="0"
 				max="300"
-				value={params.maxPrice}
+				value={filters.maxPrice}
 				onChange={handleChanges}
 				className="w-full accent-gray-600 cursor-pointer"
 				step={10}

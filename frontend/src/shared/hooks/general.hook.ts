@@ -76,16 +76,17 @@ export const useUrlParams = <TQuery extends TBaseQuery = TBaseQuery>({ schema }:
 	}, [searchParams, schema]);
 
 	// Sets params immediately
-	const setParam = <K extends Extract<keyof TQuery, string>>({ key, value }: { key: K; value: TQuery[K] }) => {
+	const setParam = <TQuery extends TBaseQuery = TBaseQuery>(params: Partial<TQuery>) => {
 		setSearchParams((prev) => {
 			const newParams = new URLSearchParams(prev);
 
-			if (value === undefined || value === null || value === '') {
-				newParams.delete(key);
-			} else {
-				newParams.set(key, String(value));
-			}
-
+			Object.entries(params).forEach(([key, value]) => {
+				if (value === undefined || value === null || value === '') {
+					newParams.delete(key);
+				} else {
+					newParams.set(key, String(value));
+				}
+			});
 			return newParams;
 		});
 	};
@@ -93,7 +94,12 @@ export const useUrlParams = <TQuery extends TBaseQuery = TBaseQuery>({ schema }:
 	// Sets params with debounce
 	const setParamsDebounce = useDebouncedCallback(setParam, 300);
 
-	return { filters, searchParams, setSearchParams, setParam, setParamsDebounce };
+	// Function that results the params:
+	const clearAllParams = () => {
+		setSearchParams({});
+	};
+
+	return { filters, searchParams, setParam, setParamsDebounce, clearAllParams };
 };
 
 export const useUrlFilteredFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
@@ -107,7 +113,7 @@ export const useUrlFilteredFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
 	selectData: (state: RootState) => T[];
 	selectStatus: (state: RootState) => string;
 }) => {
-	const { filters, searchParams, setSearchParams, setParam, setParamsDebounce } = useUrlParams({ schema });
+	const { filters, searchParams, clearAllParams, setParam, setParamsDebounce } = useUrlParams({ schema });
 	const { data, status } = useFetch({ filters, thunkAction, selectData, selectStatus });
 
 	return {
@@ -115,7 +121,7 @@ export const useUrlFilteredFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
 		data,
 		status,
 		searchParams,
-		setSearchParams,
+		clearAllParams,
 		setParam,
 		setParamsDebounce,
 	};
