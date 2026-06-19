@@ -50,6 +50,9 @@
 			"@common": ["shared/components/common/index"],
 			"@common/*": ["shared/components/common/*"],
 
+			"@ui": ["shared/components/ui/index"],
+			"@ui/*": ["shared/components/ui/*"],
+
 			"@sharedTypes": ["shared/types/index"],
 			"@sharedTypes/*": ["shared/types/*"],
 
