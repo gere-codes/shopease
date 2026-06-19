@@ -20,7 +20,7 @@ export const HomePage = () => {
 	});
 	// Fetch's men
 	const { data: men } = useStaticFilteredFetch({
-		staticParams: { isPaginated: false },
+		staticParams: { isPaginated: false, limit: 4 },
 		schema: productQuerySchema,
 		selectData: selectProductItems,
 		selectStatus: selectProductStatus,
@@ -28,7 +28,7 @@ export const HomePage = () => {
 	});
 	// Fetch's women
 	const { data: women } = useStaticFilteredFetch({
-		staticParams: { isPaginated: false },
+		staticParams: { isPaginated: false, limit: 4 },
 		schema: productQuerySchema,
 		selectData: selectProductItems,
 		selectStatus: selectProductStatus,
