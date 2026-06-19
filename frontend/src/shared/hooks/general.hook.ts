@@ -76,7 +76,7 @@ export const useUrlParams = <TQuery extends TBaseQuery = TBaseQuery>({ schema }:
 	}, [searchParams, schema]);
 
 	// Sets params immediately
-	const setParam = <TQuery extends TBaseQuery = TBaseQuery>(params: Partial<TQuery>) => {
+	const setParam = <TQuery>(params: Partial<TQuery>) => {
 		setSearchParams((prev) => {
 			const newParams = new URLSearchParams(prev);
 

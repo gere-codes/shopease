@@ -1,5 +1,5 @@
+import type { TProduct } from '@/shared/schema';
 import { useState } from 'react';
-import type { TProduct } from '@product';
 import { FaChevronDown, FaMinus, FaPlus, FaShoppingBag } from 'react-icons/fa';
 
 export const ProductDetails = ({ product }: { product: TProduct }) => {

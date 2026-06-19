@@ -16,7 +16,7 @@ export type TCategory = z.infer<typeof categorySchema>;
 export const categoryQuerySchema = commonQuery
 	.extend({
 		search: z.string().optional(),
-		sort: z.enum(['createdAt', 'name']).default('createdAt'),
+		sortBy: z.enum(['featured', 'nameAsc', 'nameDesc']).default('featured'),
 	})
 	.transform(withOffset);
 
