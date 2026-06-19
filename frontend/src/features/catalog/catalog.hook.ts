@@ -1,6 +1,6 @@
 import { useUrlParams } from '@/shared/hooks';
 import { productQuerySchema, type TProductQuery } from '@/shared/schema';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const useCatalogActions = () => {
 	const { filters, setParam, setParamsDebounce, searchParams, clearAllParams } = useUrlParams<TProductQuery>({
@@ -8,6 +8,13 @@ export const useCatalogActions = () => {
 	});
 
 	const [localFilters, setLocalFilters] = useState<TProductQuery>(filters);
+
+	useEffect(() => {
+		function syncFilters() {
+			setLocalFilters(filters);
+		}
+		syncFilters();
+	}, [filters]);
 
 	const handleChanges = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
 		const { name, value } = e.target;
