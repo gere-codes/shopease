@@ -44,14 +44,14 @@ export const CatalogPage = () => {
 					</button>
 
 					<select
-						value={localFilters?.sort}
-						name="sort"
+						value={localFilters?.sortBy}
+						name="sortBy"
 						onChange={handleChanges}
 						className="rounded-md border-gray-300 py-2 pl-3 pr-10 text-sm focus:border-gray-300 focus:outline-none focus:ring-gray-500 bg-white border"
 					>
-						<option value="createdAt">Sort by: Featured</option>
-						<option value="price-low">Price: Low to High</option>
-						<option value="price-high">Price: High to Low</option>
+						<option value="featured">Sort by: Featured</option>
+						<option value="priceAsc">Price: Low to High</option>
+						<option value="priceDesc">Price: High to Low</option>
 					</select>
 				</div>
 			</div>
@@ -154,7 +154,7 @@ const FilterControls = ({
 				type="range"
 				min="0"
 				max="300"
-				value={filters.maxPrice}
+				value={filters.maxPrice || 300}
 				onChange={handleChanges}
 				className="w-full accent-gray-600 cursor-pointer"
 				step={10}
