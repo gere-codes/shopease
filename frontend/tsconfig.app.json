@@ -40,6 +40,9 @@
 			"@product": ["features/product/index"],
 			"@product/*": ["features/product/*"],
 
+			"@cart": ["features/cart/index"],
+			"@cart/*": ["features/cart/*"],
+
 			// SHARED
 			"@schema": ["shared/schema/index"],
 			"@schema/*": ["shared/schema/*"],
