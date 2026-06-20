@@ -1,0 +1,7 @@
+export enum ECartLastAction {
+	MAX_REACHED = 'MAX_REACHED',
+	ADDED = 'ADDED',
+	INITIAL = 'INITIAL',
+	REMOVED = 'REMOVED',
+	UPDATED = 'UPDATED',
+}
