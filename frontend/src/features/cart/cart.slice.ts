@@ -39,5 +39,14 @@ export const cartSlice = createSlice({
 				}
 			}
 		},
+
+		remove: (state, action) => {
+			const payload = action.payload;
+
+			const itemIndex = state.cart.findIndex((item) => item.product.id === payload.product.id);
+			if (itemIndex !== -1) {
+				state.cart.splice(itemIndex, 1);
+			}
+		},
 	},
 });
