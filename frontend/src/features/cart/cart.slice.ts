@@ -1,42 +1,40 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { TCart } from './cart.schema';
+import { ECartLastAction } from './cart.enum';
 
 interface CartState {
 	items: TCart[];
+	lastAction: ECartLastAction;
 }
 
 const initialState: CartState = {
 	items: [],
+	lastAction: ECartLastAction.INITIAL,
 };
 export const cartSlice = createSlice({
 	name: 'cart',
 	initialState,
 	reducers: {
-		increment: (state, action: PayloadAction<TCart>) => {
+		add: (state, action: PayloadAction<TCart>) => {
 			const payload = action.payload;
+			const item = state.items.find((i) => i.product.id === payload.product.id);
+			const max = payload.product.quantity;
 
-			const itemIndex = state.items.findIndex((item) => item.product.id === payload.product.id);
-			if (itemIndex !== -1) {
-				const item = state.items[itemIndex];
-				if (item.quantity < item.product.quantity) {
-					item.quantity += 1;
+			if (item) {
+				const newQty = item.quantity + payload.quantity;
+
+				if (newQty > max) {
+					item.quantity = max;
+					state.lastAction = ECartLastAction.MAX_REACHED;
+				} else {
+					item.quantity = newQty;
+					state.lastAction = ECartLastAction.ADDED;
 				}
 			} else {
-				state.items.push({ ...payload, quantity: 1 });
-			}
-		},
+				const qty = Math.min(payload.quantity, max);
+				state.items.push({ ...payload, quantity: qty });
 
-		decrement: (state, action) => {
-			const payload = action.payload;
-
-			const itemIndex = state.items.findIndex((item) => item.product.id === payload.product.id);
-			if (itemIndex !== -1) {
-				const item = state.items[itemIndex];
-				if (item.quantity === 1) {
-					state.items.splice(itemIndex, 1);
-				} else {
-					item.quantity--;
-				}
+				state.lastAction = qty < payload.quantity ? ECartLastAction.MAX_REACHED : ECartLastAction.ADDED;
 			}
 		},
 
@@ -46,9 +44,10 @@ export const cartSlice = createSlice({
 			const itemIndex = state.items.findIndex((item) => item.product.id === payload.product.id);
 			if (itemIndex !== -1) {
 				state.items.splice(itemIndex, 1);
+				state.lastAction = ECartLastAction.REMOVED;
 			}
 		},
 	},
 });
 
-export const { increment, decrement, remove } = cartSlice.actions;
+export const cartAction = cartSlice.actions;
