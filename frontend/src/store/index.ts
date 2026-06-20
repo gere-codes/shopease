@@ -10,11 +10,16 @@ const persistConfig = {
 	storage,
 	version: 1,
 };
+const cartPersistConfig = {
+	key: 'cart',
+	storage,
+	blacklist: ['lastAction'],
+};
 
 const rootReducer = combineReducers({
 	categories: categorySlice.reducer,
 	products: productSlice.reducer,
-	cart: cartSlice.reducer,
+	cart: persistReducer(cartPersistConfig, cartSlice.reducer),
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
