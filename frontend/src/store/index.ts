@@ -3,6 +3,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import { categorySlice } from '@/shared/store/category/category.slice';
 import { productSlice } from '@/shared/store/product/product.slice';
+import { cartSlice } from '@/features/cart/cart.slice';
 
 const persistConfig = {
 	key: 'root',
@@ -13,6 +14,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
 	categories: categorySlice.reducer,
 	products: productSlice.reducer,
+	cart: cartSlice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
