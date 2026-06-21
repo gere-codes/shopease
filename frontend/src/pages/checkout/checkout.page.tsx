@@ -220,6 +220,64 @@ export const CheckoutPage: React.FC = () => {
 								</div>
 							</section>
 						</div>
+						{/* RIGHT: Order Summary  */}
+						<div className="lg:col-span-5">
+							<div className="bg-white p-6 rounded-xl border border-slate-200 shadown-xs lg:sticky lg:top-16 space-y-6">
+								<h2 className="text-xl font-semibold border-b border-slate-200 pb-4">Order Summary</h2>
+								{/* Cart Items List */}
+								<ul className="divide-y divide-slate-100 max-h-96 overflow-y-auto pr-2">
+									{cart.map((item) => (
+										<li key={item.product.id} className="flex py-4 first:pt-0 last:pb-0">
+											<img
+												src={`${BASE_URL}${item.product.images[0]}`}
+												alt={item.product.name}
+												className="h-16 w-16 object-cover rounded-lg bg-slate-100 border border-slate-200"
+											/>
+											<div className="ml-4 flex-1 flex flex-col justify-between">
+												<div>
+													<h3 className="text-sm font-medium text-slate-900 line-clamp-1">
+														{item.product.name}
+													</h3>
+													{/* <p className="text-xs text-slate-500 mt-0.5">{item.variant}</p> */}
+												</div>
+												<div className="flex justify-between items-end text-sm">
+													<p className="text-slate-500">Qty {item.quantity}</p>
+													<p className="font-medium text-slate-900">
+														${(item.product.price * item.quantity).toFixed(2)}
+													</p>
+												</div>
+											</div>
+										</li>
+									))}
+								</ul>
+								{/* Price Breakdown */}
+								<div className="border-t border-slate-200 pt-4 space-y-3 text-sm ">
+									<div className="flex justify-between text-slate-600">
+										<span>Subtotal</span>
+										<span className="font-medium text-slate-900">${subtotal.toFixed(2)}</span>
+									</div>
+									<div className="flex justify-between text-slate-600">
+										<span>Shipping</span>
+										<span className="font-medium text-slate-900">${shippingEst.toFixed(2)}</span>
+									</div>
+									<div className="flex justify-between text-slate-600">
+										<span>Tax</span>
+										<span className="font-medium text-slate-900">${taxEst.toFixed(2)}</span>
+									</div>
+									<div className="flex justify-between text-base font-semibold border-t border-slate-200 pt-3 text-slate-900">
+										<span>Total</span>
+										<span>${totalCost.toFixed(2)}</span>
+									</div>
+								</div>
+								{/* Submit Button */}
+								<button
+									type="submit"
+									className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition-all focus:ring-4 focus:ring-indigo-200"
+								>
+									Pay ${totalCost.toFixed(2)}
+								</button>
+							</div>
+						</div>
 					</form>
 				</>
 			</div>
