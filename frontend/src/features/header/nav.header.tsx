@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Link, useNavigate, useSearchParams } from 'react-router';
 import { FiShoppingCart, FiSearch, FiMenu, FiX } from 'react-icons/fi';
+import { useAppSelector } from '@/shared/hooks/redux.hook';
+import { selectCartTotalItems } from '../cart';
 
 const navLinks = [
 	{ to: '/men', label: 'Men', slug: 'men' },
 	{ to: '/women', label: 'Women', slug: 'women' },
 	{ to: '/kids', label: 'Kids', slug: 'kids' },
 ];
-const cartItemsCount = 3;
 export const Nav = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [searchQuery, setSearchQuery] = useState('');
 	const [searchParams, setSearchParams] = useSearchParams();
 	const navigate = useNavigate();
+	const cartItemsCount = useAppSelector(selectCartTotalItems);
 
 	useEffect(() => {
 		const initials = () => {

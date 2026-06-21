@@ -1,4 +1,3 @@
-import { useAppDispatch } from '@/shared/hooks/redux.hook';
 import type { TProduct } from '@/shared/schema';
 import { useState } from 'react';
 import { FaChevronDown, FaShoppingBag } from 'react-icons/fa';
