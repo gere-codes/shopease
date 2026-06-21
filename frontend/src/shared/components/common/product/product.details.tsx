@@ -1,22 +1,21 @@
+import { useAppDispatch } from '@/shared/hooks/redux.hook';
 import type { TProduct } from '@/shared/schema';
 import { useState } from 'react';
-import { FaChevronDown, FaMinus, FaPlus, FaShoppingBag } from 'react-icons/fa';
+import { FaChevronDown, FaShoppingBag } from 'react-icons/fa';
 
-export const ProductDetails = ({ product }: { product: TProduct }) => {
-	const [quantity, setQuantity] = useState<number>(1);
+export const ProductDetails = ({
+	product,
 
+	add,
+}: {
+	product: TProduct;
+	add: (item: TProduct) => void;
+}) => {
 	const [isDescOpen, setIsDescOpen] = useState<boolean>(true);
 	const [isShippingOpen, setIsShippingOpen] = useState<boolean>(false);
 
-	const increment = () => setQuantity((prev) => (prev < product.quantity ? prev + 1 : product.quantity));
-	const decrement = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
-
-	const handleAddToCart = () => {
-		console.log(`Adding ${quantity} of ${product?.name} to cart.`);
-	};
-
 	return (
-		<section className="w-full md:w-1/2 flex flex-col gap-6 p-2">
+		<section className="w-full md:w-1/2 flex flex-col gap-6 p-2 ">
 			{/* Header: Title & Price */}
 			<header className="border-b border-gray-100 pb-4">
 				<h1 className="text-3xl font-bold text-gray-900 tracking-tight">{product?.name}</h1>
@@ -25,33 +24,9 @@ export const ProductDetails = ({ product }: { product: TProduct }) => {
 
 			{/* Actions: Quantity Selector & Add to Cart */}
 			<section className="flex gap-4 items-center border-b border-gray-100 pb-6">
-				{/* Quantity Input Field */}
-				<div className="flex items-center rounded-sm h-12  overflow-hidden bg-white ">
-					<button
-						onClick={decrement}
-						className="px-4 h-full text-gray-600 bg-gray-100/70 active:bg-gray-100 transition-colors"
-						aria-label="Decrease quantity"
-					>
-						<FaMinus size={16} />
-					</button>
-					<input
-						type="number"
-						value={quantity}
-						readOnly
-						className="w-12 text-center font-medium text-gray-900 focus:outline-none bg-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-					/>
-					<button
-						onClick={increment}
-						className="px-4 h-full text-gray-600 bg-gray-100/70 active:bg-gray-100 transition-colors"
-						aria-label="Increase quantity"
-					>
-						<FaPlus size={16} />
-					</button>
-				</div>
-
 				{/* Add to Cart Button */}
 				<button
-					onClick={handleAddToCart}
+					onClick={() => add(product)}
 					className="flex-1 w-full h-12 bg-black text-white font-medium rounded-sm flex items-center justify-center gap-2 hover:bg-gray-900 active:bg-black transition-all duration-150 "
 				>
 					<FaShoppingBag size={18} />
