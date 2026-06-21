@@ -37,21 +37,21 @@ export const cartSlice = createSlice({
 				state.lastAction = qty < payload.quantity ? ECartLastAction.MAX_REACHED : ECartLastAction.ADDED;
 			}
 		},
-		update: (state, action) => {
+		update: (state, action: PayloadAction<{ id: string; quantity: number }>) => {
 			const payload = action.payload;
-			const item = state.items.find((i) => i.product.id === payload.product.id);
-			const max = payload.product.quantity;
+			const item = state.items.find((i) => i.product.id === payload.id);
 
 			if (item) {
+				const max = item.product.quantity;
 				item.quantity = Math.min(payload.quantity, max);
 				state.lastAction = ECartLastAction.UPDATED;
 			}
 		},
 
-		remove: (state, action) => {
-			const payload = action.payload;
+		remove: (state, action: PayloadAction<string>) => {
+			const id = action.payload;
 
-			const itemIndex = state.items.findIndex((item) => item.product.id === payload.product.id);
+			const itemIndex = state.items.findIndex((item) => item.product.id === id);
 			if (itemIndex !== -1) {
 				state.items.splice(itemIndex, 1);
 				state.lastAction = ECartLastAction.REMOVED;
