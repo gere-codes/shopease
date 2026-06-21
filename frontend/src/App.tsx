@@ -1,6 +1,6 @@
 import './App.css';
 import { Route, Routes } from 'react-router';
-import { CartPage, CatalogPage, HomePage, ProductPage } from '@pages';
+import { CartPage, CatalogPage, CheckoutPage, HomePage, ProductPage } from '@pages';
 import { Nav } from '@header';
 import { Footer } from '@common';
 
@@ -14,6 +14,7 @@ function App() {
 					<Route path="/product/:id" element={<ProductPage />} />
 					<Route path="/catalog" element={<CatalogPage />} />
 					<Route path="/cart" element={<CartPage />} />
+					<Route path="/checkout" element={<CheckoutPage />} />
 				</Routes>
 			</main>
 			<Footer />
