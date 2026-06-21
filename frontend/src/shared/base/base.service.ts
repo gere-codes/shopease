@@ -1,5 +1,5 @@
 import z from 'zod';
-import { apiResponseSchema, paginationSchema, type TBaseQuery } from '../schema';
+import { paginationSchema, type TBaseQuery } from '../schema';
 import type { ICollectionResult } from '@sharedTypes';
 import { publicInstance } from '@api';
 
@@ -20,19 +20,19 @@ export abstract class BaseService<T, TQuery extends TBaseQuery = TBaseQuery> imp
 
 	async getById(id: string): Promise<T> {
 		const response = await publicInstance.get(`/public/${this.resource}/${id}`);
-		const { data } = response.data;
+		const { payload } = response.data;
 
-		return this.schema.parse(data);
+		return this.schema.parse(payload);
 	}
 	async getCollection(params: TQuery): Promise<ICollectionResult<T>> {
 		const query = this.querySchema.parse(params);
 
 		const response = await publicInstance.get(`/public/${this.resource}`, { params: query });
-		const { data, pagination } = response.data.data;
+		const { items, pagination } = response.data.payload;
 		// const validated = apiResponseSchema.parse(response.data.data);
 
 		return {
-			data: z.array(this.schema).parse(data.map((d: unknown) => this.transform(d))),
+			items: z.array(this.schema).parse(items.map((d: unknown) => this.transform(d))),
 			pagination: paginationSchema.parse(pagination),
 		};
 	}

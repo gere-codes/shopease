@@ -73,7 +73,7 @@ export const createBaseSlice = <T, TQuery extends TBaseQuery>(
 				})
 				.addCase(thunks.getCollection.fulfilled, (state, action) => {
 					state.items.status = 'succeeded';
-					state.items.data = castDraft(action.payload.data);
+					state.items.data = castDraft(action.payload.items);
 					state.pagination = action.payload.pagination as typeof state.pagination;
 				})
 				.addCase(thunks.getCollection.rejected, (state, action) => {
