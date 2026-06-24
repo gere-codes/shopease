@@ -6,6 +6,7 @@ import type { ICollectionResult } from '../types';
 import { useSearchParams } from 'react-router';
 import type { RootState } from '@/store';
 import type z from 'zod';
+import type { TBaseSliceState } from '../base/base.slice';
 
 export const useDebouncedCallback = <TArgs extends unknown[]>(
 	callback: (...args: TArgs) => void,
@@ -36,29 +37,36 @@ export const useDebouncedCallback = <TArgs extends unknown[]>(
 	return debouncedCallback;
 };
 
-export const useFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
+export const useFetch = <T, TKey extends string, TQuery extends TBaseQuery = TBaseQuery>({
 	filters,
+	key,
 	thunkAction,
-	selectData,
-	selectStatus,
+	selectSlice,
 }: {
 	filters: TQuery;
-	thunkAction: AsyncThunk<ICollectionResult<T>, TQuery, { rejectValue: string }>;
-	selectData: (state: RootState) => T[];
-	selectStatus: (state: RootState) => string;
+	key: TKey;
+	thunkAction: AsyncThunk<
+		{ collection: ICollectionResult<T>; key: TKey },
+		{ filters: TQuery; key: TKey },
+		{ rejectValue: string }
+	>;
+
+	selectSlice: (state: RootState) => TBaseSliceState<T, TKey>;
 }) => {
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		dispatch(thunkAction(filters as unknown as TQuery & undefined));
-	}, [dispatch, filters, thunkAction]);
+		dispatch(thunkAction({ filters, key }));
+	}, [dispatch, filters, thunkAction, key]);
 
-	const data = useAppSelector(selectData);
-	const status = useAppSelector(selectStatus);
+	const slice = useAppSelector(selectSlice);
+
+	const bucket = slice.itemsByKey[key];
 
 	return {
-		data,
-		status,
+		data: bucket?.items.data ?? [],
+		status: bucket?.items.status ?? 'idle',
+		pagination: bucket?.pagination,
 	};
 };
 
@@ -102,19 +110,23 @@ export const useUrlParams = <TQuery extends TBaseQuery = TBaseQuery>({ schema }:
 	return { filters, searchParams, setParam, setParamsDebounce, clearAllParams };
 };
 
-export const useUrlFilteredFetch = <T, TQuery extends TBaseQuery = TBaseQuery>({
+export const useUrlFilteredFetch = <T, TKey extends string, TQuery extends TBaseQuery = TBaseQuery>({
 	schema,
 	thunkAction,
-	selectData,
-	selectStatus,
+	key,
+	selectSlice,
 }: {
 	schema: z.ZodType<TQuery>;
-	thunkAction: AsyncThunk<ICollectionResult<T>, TQuery, { rejectValue: string }>;
-	selectData: (state: RootState) => T[];
-	selectStatus: (state: RootState) => string;
+	thunkAction: AsyncThunk<
+		{ collection: ICollectionResult<T>; key: TKey },
+		{ filters: TQuery; key: TKey },
+		{ rejectValue: string }
+	>;
+	key: TKey;
+	selectSlice: (state: RootState) => TBaseSliceState<T, TKey>;
 }) => {
 	const { filters, searchParams, clearAllParams, setParam, setParamsDebounce } = useUrlParams({ schema });
-	const { data, status } = useFetch({ filters, thunkAction, selectData, selectStatus });
+	const { data, status } = useFetch({ filters, thunkAction, key, selectSlice });
 
 	return {
 		filters,
@@ -147,22 +159,26 @@ export const useStaticParams = <TQuery extends TBaseQuery>({
 	return { filters };
 };
 
-export const useStaticFilteredFetch = <T, TQuery extends TBaseQuery>({
+export const useStaticFilteredFetch = <T, TKey extends string, TQuery extends TBaseQuery>({
 	staticParams,
 	schema,
 	thunkAction,
-	selectData,
-	selectStatus,
+	key,
+	selectSlice,
 }: {
 	staticParams: Partial<TQuery>;
 	schema: z.ZodType<TQuery>;
-	thunkAction: AsyncThunk<ICollectionResult<T>, TQuery, { rejectValue: string }>;
-	selectData: (state: RootState) => T[];
-	selectStatus: (state: RootState) => string;
+	thunkAction: AsyncThunk<
+		{ collection: ICollectionResult<T>; key: TKey },
+		{ filters: TQuery; key: TKey },
+		{ rejectValue: string }
+	>;
+	key: TKey;
+	selectSlice: (state: RootState) => TBaseSliceState<T, TKey>;
 }) => {
 	const { filters } = useStaticParams({ schema, staticParams });
 
-	const { data, status } = useFetch({ filters, thunkAction, selectData, selectStatus });
+	const { data, status } = useFetch({ filters, thunkAction, key, selectSlice });
 
 	return { data, status };
 };

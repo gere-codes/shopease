@@ -3,20 +3,21 @@ import { FiSliders, FiX } from 'react-icons/fi';
 import { ProductGrid } from '@common';
 import { useUrlFilteredFetch } from '@/shared/hooks';
 import { productQuerySchema, type TProduct, type TProductQuery } from '@/shared/schema';
-import { selectProductItems, selectProductStatus } from '@/shared/store/product/product.selector';
+import { selectProductSlice } from '@/shared/store/product/product.selector';
 import { productThunks } from '@/shared/store/product/product.thunks';
 import { BASE_URL } from '@/shared/api';
 import { useCatalogActions } from '@/features/catalog/catalog.hook';
+import type { TProductKey } from '@/shared/store';
 
 export const CatalogPage = () => {
 	const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
 	// Fetch's catalog
-	const { data } = useUrlFilteredFetch<TProduct, TProductQuery>({
+	const { data } = useUrlFilteredFetch<TProduct, TProductKey, TProductQuery>({
 		schema: productQuerySchema,
-		selectData: selectProductItems,
-		selectStatus: selectProductStatus,
 		thunkAction: productThunks.getCollection,
+		key: 'catalog',
+		selectSlice: selectProductSlice,
 	});
 
 	// Handle catalog events

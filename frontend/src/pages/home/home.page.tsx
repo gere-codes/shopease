@@ -1,12 +1,12 @@
-import { ProductArraivals, HeroSlides } from '@home';
+import { HeroSlides } from '@home';
 import { CarouselSection, ProductSection, PromoBanner } from '@common';
 import { BASE_URL } from '@/shared/api';
 import { categoryQuerySchema, type TCategory } from '@/shared/schema/category.schema';
 import { categoryThunks } from '@/shared/store/category/category.thunks';
-import { selectCategoriesItems, selectCategoriesStatus } from '@/shared/store';
+import { selectCategorySlice } from '@/shared/store';
 import { useStaticFilteredFetch } from '@/shared/hooks';
 import { productThunks } from '@/shared/store/product/product.thunks';
-import { selectProductItems, selectProductStatus } from '@/shared/store/product/product.selector';
+import { selectProductSlice } from '@/shared/store/product/product.selector';
 import { productQuerySchema } from '@/shared/schema';
 
 export const HomePage = () => {
@@ -14,25 +14,25 @@ export const HomePage = () => {
 	const { data: categories } = useStaticFilteredFetch({
 		staticParams: { isPaginated: false },
 		schema: categoryQuerySchema,
-		selectData: selectCategoriesItems,
-		selectStatus: selectCategoriesStatus,
 		thunkAction: categoryThunks.getCollection,
+		selectSlice: selectCategorySlice,
+		key: 'home-all',
 	});
 	// Fetch's men
 	const { data: men } = useStaticFilteredFetch({
-		staticParams: { isPaginated: false, limit: 4 },
+		staticParams: { isPaginated: false, limit: 4, category: 'men' },
 		schema: productQuerySchema,
-		selectData: selectProductItems,
-		selectStatus: selectProductStatus,
+		selectSlice: selectProductSlice,
 		thunkAction: productThunks.getCollection,
+		key: 'home-men',
 	});
 	// Fetch's women
 	const { data: women } = useStaticFilteredFetch({
-		staticParams: { isPaginated: false, limit: 4 },
+		staticParams: { isPaginated: false, limit: 4, category: 'women' },
 		schema: productQuerySchema,
-		selectData: selectProductItems,
-		selectStatus: selectProductStatus,
 		thunkAction: productThunks.getCollection,
+		selectSlice: selectProductSlice,
+		key: 'home-women',
 	});
 
 	return (
