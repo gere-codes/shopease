@@ -1,44 +1,55 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, type Draft, type PayloadAction } from '@reduxjs/toolkit';
 import type { TBaseQuery, TPagination } from '../schema';
 import type { BaseThunksResult } from './base.thunk';
-import { castDraft } from 'immer';
-
-export type BaseSliceState<T, TExtra = {}> = {
-	items: {
-		data: T[];
-		status: 'idle' | 'pending' | 'succeeded' | 'failed';
-		error: string | null;
-	};
-	item: {
-		data: T | null;
-		status: 'idle' | 'pending' | 'succeeded' | 'failed';
-		error: string | null;
-	};
-
-	pagination: TPagination;
+interface IAsyncState<T> {
+	data: T;
+	status: 'idle' | 'pending' | 'succeeded' | 'failed';
+	error: string | null;
+}
+interface IItemsByKeys<T> {
+	items: IAsyncState<T[]>;
+	pagination?: TPagination;
+}
+export type TBaseSliceState<T, TKey extends string, TExtra = {}> = {
+	itemsByKey: Record<TKey, IItemsByKeys<T>>;
+	item: IAsyncState<T | null>;
 } & TExtra;
 
-export const createBaseSlice = <T, TQuery extends TBaseQuery>(
+const getOrCreateBucket = <T, TKey extends string>(
+	state: Draft<TBaseSliceState<T, TKey>>,
+	key: TKey,
+): IItemsByKeys<T> => {
+	const map = state.itemsByKey as Record<TKey, IItemsByKeys<T>>;
+
+	if (!map[key]) {
+		map[key] = {
+			items: {
+				data: [],
+				status: 'idle',
+				error: null,
+			},
+			pagination: {
+				limit: 0,
+				page: 0,
+				totalItems: 0,
+				totalPages: 0,
+			},
+		};
+	}
+
+	return map[key];
+};
+
+export const createBaseSlice = <T, TKey extends string, TQuery extends TBaseQuery>(
 	resource: string,
-	thunks: BaseThunksResult<T, TQuery>,
+	thunks: BaseThunksResult<T, TKey, TQuery>,
 ) => {
-	const initialState: BaseSliceState<T> = {
-		items: {
-			data: [],
-			status: 'idle',
-			error: null,
-		},
+	const initialState: TBaseSliceState<T, TKey> = {
+		itemsByKey: {} as Record<TKey, IItemsByKeys<T>>,
 		item: {
 			data: null,
 			status: 'idle',
 			error: null,
-		},
-
-		pagination: {
-			limit: 4,
-			page: 1,
-			totalItems: 1,
-			totalPages: 1,
 		},
 	};
 
@@ -46,8 +57,9 @@ export const createBaseSlice = <T, TQuery extends TBaseQuery>(
 		name: resource,
 		initialState,
 		reducers: {
-			clearItemsError: (state) => {
-				state.items.error = null;
+			clearItemsError: (state, action: PayloadAction<TKey>) => {
+				const bucket = getOrCreateBucket(state, action.payload);
+				bucket.items.error = null;
 			},
 			reset: () => initialState,
 		},
@@ -67,18 +79,29 @@ export const createBaseSlice = <T, TQuery extends TBaseQuery>(
 					state.item.error = action.payload || 'Unknown error';
 				})
 				// get collecion
-				.addCase(thunks.getCollection.pending, (state) => {
-					state.items.status = 'pending';
-					state.items.error = null;
+				.addCase(thunks.getCollection.pending, (state, action) => {
+					const key = action.meta.arg.key as TKey;
+					const bucket = getOrCreateBucket(state, key);
+
+					bucket.items.status = 'pending';
+					bucket.items.error = null;
 				})
 				.addCase(thunks.getCollection.fulfilled, (state, action) => {
-					state.items.status = 'succeeded';
-					state.items.data = castDraft(action.payload.items);
-					state.pagination = action.payload.pagination as typeof state.pagination;
+					const key = action.payload.key as TKey;
+					const collection = action.payload.collection;
+					const { items, pagination } = collection;
+
+					const bucket = getOrCreateBucket(state, key);
+					bucket.items.status = 'succeeded';
+					bucket.items.data = items;
+					bucket.pagination = pagination;
 				})
 				.addCase(thunks.getCollection.rejected, (state, action) => {
-					state.items.status = 'failed';
-					state.items.error = action.payload || 'Unknown error';
+					const key = action.meta.arg.key as TKey;
+
+					const bucket = getOrCreateBucket(state, key);
+					bucket.items.status = 'failed';
+					bucket.items.error = action.payload || 'unknown error';
 				});
 		},
 	});
