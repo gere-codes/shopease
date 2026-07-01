@@ -1,5 +1,4 @@
-import { HeroSlides } from '@home';
-import { CarouselSection, ProductSection, PromoBanner } from '@common';
+import { CarouselSection, ProductSection, PromoBanner, SlideSection } from '@common';
 import { BASE_URL } from '@/shared/api';
 import { categoryQuerySchema, type TCategory } from '@/shared/schema/category.schema';
 import { categoryThunks } from '@/shared/store/category/category.thunks';
@@ -8,6 +7,7 @@ import { useStaticFilteredFetch } from '@/shared/hooks';
 import { productThunks } from '@/shared/store/product/product.thunks';
 import { selectProductSlice } from '@/shared/store/product/product.selector';
 import { productQuerySchema } from '@/shared/schema';
+import { slides } from '@/features/home/constants';
 
 export const HomePage = () => {
 	// Fetch's categories
@@ -37,8 +37,8 @@ export const HomePage = () => {
 
 	return (
 		<section>
-			{/* Slides */}
-			<HeroSlides />
+			{/* Hero Slides */}
+			<SlideSection data={slides} />
 
 			{/* Categories */}
 			<CarouselSection

@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { slides } from '../constants';
-import { HeroSlide } from './hero.slide';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import { SlideContent } from './slide.content';
+import type { ISlide } from './slide.type';
 
-export const HeroSlides = () => {
+export const SlideSection = ({ data }: { data: ISlide[] }) => {
 	const [activeIndex, setActiveIndex] = useState(0);
 
 	return (
@@ -24,11 +24,13 @@ export const HeroSlides = () => {
 				speed={500}
 				slidesPerView={1}
 				onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-				className="h-[90vh]"
+				style={{
+					height: 'calc(100vh - 4.5rem)',
+				}}
 			>
-				{slides.map((slide, index) => (
+				{data.map((slide, index) => (
 					<SwiperSlide>
-						<HeroSlide {...slide} isActive={activeIndex === index} />
+						<SlideContent {...slide} isActive={activeIndex === index} />
 					</SwiperSlide>
 				))}
 			</Swiper>

@@ -1,6 +1,6 @@
-import type { ISlide } from '../types';
-import '../style.css';
+import './style.css';
 import { memo } from 'react';
+import type { ISlide } from './slide.type';
 
 type alignment = 'items-start' | 'items-center' | 'items-end' | 'text-left' | 'text-center' | 'text-right';
 
@@ -13,7 +13,7 @@ const mapAlign: Record<NonNullable<ISlide['textAlign']>, alignment[]> = {
 interface Props extends ISlide {
 	isActive: boolean;
 }
-export const HeroSlide = memo(({ img, badge, title, cta, textAlign = 'left', isActive }: Props) => {
+export const SlideContent = memo(({ img, badge, title, cta, textAlign = 'left', isActive }: Props) => {
 	const [alignItems, textAlignClass] = mapAlign[textAlign];
 
 	return (
