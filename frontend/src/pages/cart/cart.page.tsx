@@ -73,9 +73,8 @@ export const CartPage = () => {
 														id={`quantity-${item.product.id}`}
 														value={item.quantity}
 														onChange={(e) => updateQuantity(item, e.target.value)}
-														className="rounded-md border border-gray-300 bg-white py-1.5 pl-3 pr-8 text-sm font-medium text-gray-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+														className="rounded-md border border-gray-300 bg-white py-1.5 pl-3 pr-8 text-sm font-medium text-gray-900 "
 													>
-														{/* Loop from 1 up to the product's max available quantity */}
 														{Array.from(
 															{ length: item.product.quantity },
 															(_, i) => i + 1,
@@ -121,7 +120,7 @@ export const CartPage = () => {
 										<span>${totalCost.toFixed(2)}</span>
 									</div>
 								</div>
-								<button className="w-full mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-md shadow-sm transition-colors flex items-center justify-center gap-2 group">
+								<button className="w-full mt-6 bg-gray-900 hover:bg-gray-800 text-white font-medium py-3 px-4 rounded-md shadow-sm transition-colors flex items-center justify-center gap-2 group">
 									Checkout
 									<ArrowRight
 										size={18}
@@ -129,9 +128,7 @@ export const CartPage = () => {
 									/>
 								</button>
 								<div className="mt-4 text-center">
-									<span className="text-xs text-gray-400">
-										Complimentary shipping on orders over $150
-									</span>
+									<span className="text-xs text-gray-400">FREE shipping for orders over $150</span>
 								</div>
 							</div>
 						</div>
