@@ -38,7 +38,7 @@ export const Nav = () => {
 		}`;
 
 	return (
-		<header className="bg-white shadow-xs sticky top-0 z-50">
+		<header className="bg-white shadow-xs sticky top-0 z-50 h-18">
 			<nav className="max-w-7xl mx-auto py-4 px-6 flex justify-between items-center" aria-label="Main Navigation">
 				{/* Logo */}
 				<Link className="font-bold text-2xl text-gray-600" to="/">
