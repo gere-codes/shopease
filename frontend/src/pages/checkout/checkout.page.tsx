@@ -40,7 +40,7 @@ export const CheckoutPage: React.FC = () => {
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		console.log('Processing order for:', formData);
-		alert('Order placed successfully! Check console for payload.');
+		alert('Order placed successfully!');
 	};
 
 	return (
@@ -272,9 +272,9 @@ export const CheckoutPage: React.FC = () => {
 								{/* Submit Button */}
 								<button
 									type="submit"
-									className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition-all focus:ring-4 focus:ring-indigo-200"
+									className="w-full bg-gray-800  text-white font-medium py-2 px-4 rounded cursor-pointer"
 								>
-									Pay ${totalCost.toFixed(2)}
+									Place Order
 								</button>
 							</div>
 						</div>
