@@ -4,6 +4,7 @@ import { Container } from '@/shared/components/common';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/redux.hook';
 
 import { Trash2, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router';
 
 export const CartPage = () => {
 	const cart = useAppSelector(selectCartItems);
@@ -24,11 +25,14 @@ export const CartPage = () => {
 				<>
 					<h1 className="text-3xl font-bold tracking-tight text-gray-900 mb-8">Shopping Cart</h1>
 					{cart.length === 0 ? (
-						<div className="text-center py-16 bg-white rounded-lg shadow-sm border border-gray-100">
+						<div className="text-center py-16 bg-white rounded-lg  border border-gray-200">
 							<p className="text-gray-500 text-lg">Your cart is empty.</p>
-							<button className="mt-4 text-indigo-600 font-medium hover:text-indigo-500">
+							<Link
+								to={'/catalog'}
+								className="mt-4 text-gray-900 font-medium hover:text-gray-500 cursor-pointer"
+							>
 								Continue Shopping &rarr;
-							</button>
+							</Link>
 						</div>
 					) : (
 						<div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
@@ -120,13 +124,16 @@ export const CartPage = () => {
 										<span>${totalCost.toFixed(2)}</span>
 									</div>
 								</div>
-								<button className="w-full mt-6 bg-gray-900 hover:bg-gray-800 text-white font-medium py-3 px-4 rounded-md shadow-sm transition-colors flex items-center justify-center gap-2 group">
+								<Link
+									to={'/checkout'}
+									className="w-full mt-6 bg-gray-900 hover:bg-gray-800 text-white font-medium py-3 px-4 rounded-md shadow-sm transition-colors flex items-center justify-center gap-2 group"
+								>
 									Checkout
 									<ArrowRight
 										size={18}
 										className="transform group-hover:translate-x-1 transition-transform"
 									/>
-								</button>
+								</Link>
 								<div className="mt-4 text-center">
 									<span className="text-xs text-gray-400">FREE shipping for orders over $150</span>
 								</div>
