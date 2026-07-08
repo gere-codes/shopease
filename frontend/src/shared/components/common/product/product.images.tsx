@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { Navigation, Thumbs, FreeMode } from 'swiper/modules';
@@ -10,18 +9,12 @@ import 'swiper/css/thumbs';
 import type { TProduct } from '@/shared/schema';
 
 export const ProductImages = ({ product, baseUrl }: { product: NonNullable<TProduct>; baseUrl: string }) => {
-	const [thumbsSwiper, setThumbsSwiper] = useState(null);
 	return (
 		<section className="w-full md:w-1/2 min-w-0 overflow-hidden">
 			{/* Main image */}
 			<Swiper
-				style={{
-					'--swiper-navigation-color': '#fff',
-					'--swiper-pagination-color': '#fff',
-				}}
 				spaceBetween={10}
 				navigation={false}
-				thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
 				modules={[FreeMode, Navigation, Thumbs]}
 				className="w-full rounded-lg bg-gray-100 aspect-square"
 			>
@@ -38,7 +31,6 @@ export const ProductImages = ({ product, baseUrl }: { product: NonNullable<TProd
 
 			{/* Thumbnails */}
 			<Swiper
-				onSwiper={setThumbsSwiper}
 				spaceBetween={10}
 				slidesPerView={4}
 				freeMode={true}

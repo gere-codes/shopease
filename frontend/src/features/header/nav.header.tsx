@@ -12,7 +12,7 @@ const navLinks = [
 export const Nav = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [searchQuery, setSearchQuery] = useState('');
-	const [searchParams, setSearchParams] = useSearchParams();
+	const [searchParams] = useSearchParams();
 	const navigate = useNavigate();
 	const cartItemsCount = useAppSelector(selectCartTotalItems);
 
