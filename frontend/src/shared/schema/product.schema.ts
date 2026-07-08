@@ -14,7 +14,7 @@ export const productSchema = z.object({
 	}),
 	categoryId: z.uuid(),
 	sku: z.string().min(3).max(36),
-	images: z.array(z.string()).optional().nullable(),
+	images: z.array(z.string()),
 	createdAt: z.coerce.date().transform((v) => v.toISOString()),
 	updatedAt: z.coerce.date().transform((v) => v.toISOString()),
 });
