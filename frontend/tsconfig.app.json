@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
 		"target": "es2023",
-		"lib": ["ES2023", "DOM"],
+		"lib": ["ES2023", "DOM", "DOM.Iterable"],
 		"module": "esnext",
 		"types": ["vite/client"],
 		"skipLibCheck": true,
@@ -21,51 +21,50 @@
 		"erasableSyntaxOnly": false,
 		"noFallthroughCasesInSwitch": true,
 
-		"baseUrl": "./src",
 		"paths": {
 			// Root
-			"@/*": ["./*"],
+			"@/*": ["./src/*"],
 
 			// Pages
-			"@pages": ["pages/index"],
-			"@pages/*": ["pages/*"],
+			"@pages": ["./src/pages/index"],
+			"@pages/*": ["./src/pages/*"],
 
 			// FEATURES
-			"@home": ["features/home/index"],
-			"@home/*": ["features/home/*"],
+			"@home": ["./src/features/home/index"],
+			"@home/*": ["./src/features/home/*"],
 
-			"@header": ["features/header/index"],
-			"@header/*": ["features/header/*"],
+			"@header": ["./src/features/header/index"],
+			"@header/*": ["./src/features/header/*"],
 
-			"@product": ["features/product/index"],
-			"@product/*": ["features/product/*"],
+			"@product": ["./src/features/product/index"],
+			"@product/*": ["./src/features/product/*"],
 
-			"@cart": ["features/cart/index"],
-			"@cart/*": ["features/cart/*"],
+			"@cart": ["./src/features/cart/index"],
+			"@cart/*": ["./src/features/cart/*"],
 
 			// SHARED
-			"@schema": ["shared/schema/index"],
-			"@schema/*": ["shared/schema/*"],
+			"@schema": ["./src/shared/schema/index"],
+			"@schema/*": ["./src/shared/schema/*"],
 
-			"@api": ["shared/api/index"],
-			"@api/*": ["shared/api/*"],
+			"@api": ["./src/shared/api/index"],
+			"@api/*": ["./src/shared/api/*"],
 
-			"@common": ["shared/components/common/index"],
-			"@common/*": ["shared/components/common/*"],
+			"@common": ["./src/shared/components/common/index"],
+			"@common/*": ["./src/shared/components/common/*"],
 
-			"@ui": ["shared/components/ui/index"],
-			"@ui/*": ["shared/components/ui/*"],
+			"@ui": ["./src/shared/components/ui/index"],
+			"@ui/*": ["./src/shared/components/ui/*"],
 
-			"@sharedTypes": ["shared/types/index"],
-			"@sharedTypes/*": ["shared/types/*"],
+			"@sharedTypes": ["./src/shared/types/index"],
+			"@sharedTypes/*": ["./src/shared/types/*"],
 
 			// DATA
-			"@data": ["data/index"],
-			"@data/*": ["data/*"],
+			"@data": ["./src/data/index"],
+			"@data/*": ["./src/data/*"],
 
 			// Store
-			"@store": ["store/index"],
-			"@store/*": ["store/*"]
+			"@store": ["./src/store/index"],
+			"@store/*": ["./src/store/*"]
 		}
 	},
 	"include": ["src"]
