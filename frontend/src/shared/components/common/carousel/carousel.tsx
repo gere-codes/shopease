@@ -25,7 +25,7 @@ export const Carousel = <T extends { id: string | number; name: string; image: s
 			navigation={false}
 			pagination={{
 				clickable: true,
-				renderBullet: (index, className) => `<span class="${className}" style="margin: 0 6px;"></span>`,
+				renderBullet: (_index, className) => `<span class="${className}" style="margin: 0 6px;"></span>`,
 			}}
 			modules={[Pagination]}
 			breakpoints={{
