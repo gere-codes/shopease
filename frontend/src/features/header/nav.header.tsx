@@ -77,12 +77,12 @@ export const Nav = () => {
 
 					<Link
 						to="/cart"
-						className="text-gray-600 hover:text-indigo-600 transition-colors duration-200 relative"
+						className="text-gray-600 hover:text-gray-600 transition-colors duration-200 relative"
 						aria-label="View Cart"
 					>
 						<FiShoppingCart size={22} />
 						{cartItemsCount > 0 && (
-							<span className="absolute -top-2 -right-2 bg-indigo-600 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full animate-pulse">
+							<span className="absolute -top-2 -right-2 bg-gray-900 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full ">
 								{cartItemsCount}
 							</span>
 						)}
@@ -141,7 +141,7 @@ export const Nav = () => {
 								<div className="relative">
 									<FiShoppingCart size={20} />
 									{cartItemsCount > 0 && (
-										<span className="absolute -top-1.5 -right-1.5 bg-indigo-600 text-white text-[10px] w-3.5 h-3.5 flex items-center justify-center rounded-full">
+										<span className="absolute -top-1.5 -right-1.5 bg-red-900 text-white text-[10px] w-3.5 h-3.5 flex items-center justify-center rounded-full">
 											{cartItemsCount}
 										</span>
 									)}
