@@ -26,7 +26,7 @@ export const ProductDetails = ({
 				{/* Add to Cart Button */}
 				<button
 					onClick={() => add(product)}
-					className="flex-1 w-full h-12 bg-black text-white font-medium rounded-sm flex items-center justify-center gap-2 hover:bg-gray-900 active:bg-black transition-all duration-150 "
+					className="w-56 h-12 bg-black text-white font-medium rounded-sm flex items-center justify-center gap-2 hover:bg-gray-900 active:bg-black transition-all duration-150 "
 				>
 					<FaShoppingBag size={18} />
 					<span>Add to Cart</span>

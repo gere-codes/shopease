@@ -32,7 +32,7 @@ export const ProductPage = memo(() => {
 	return (
 		<Container>
 			{/* Main layout container */}
-			<section className="flex flex-col gap-8 md:flex-row items-start py-6 max-w-5xl mx-auto">
+			<section className="flex flex-col w-full gap-16 md:flex-row items-start py-6 mx-auto">
 				{/* Left: Product images*/}
 				<ProductImages product={product} baseUrl={BASE_URL} />
 				{/* Right: product details */}
