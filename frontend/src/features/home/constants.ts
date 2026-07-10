@@ -10,6 +10,7 @@ export const slides: ISlide[] = [
 		img: banner1,
 		cta: 'shop now',
 		badge: '50% off',
+		path: '/catalog',
 	},
 	{
 		id: 2,
@@ -18,6 +19,7 @@ export const slides: ISlide[] = [
 		cta: 'grab offer',
 		badge: 'limited offer',
 		textAlign: 'right',
+		path: '/catalog',
 	},
 	{
 		id: 3,
@@ -25,5 +27,6 @@ export const slides: ISlide[] = [
 		img: banner3,
 		cta: 'browse collection',
 		badge: 'grab offer',
+		path: '/catalog',
 	},
 ];

@@ -58,7 +58,7 @@ export const HomePage = () => {
 			/>
 
 			{/* Banner */}
-			<PromoBanner title="50% OFF" badge="ONLY THIS WEEK" cta="/arrivals" />
+			<PromoBanner title="50% OFF" badge="ONLY THIS WEEK" cta="/catalog" />
 
 			{/* Women */}
 			<ProductSection

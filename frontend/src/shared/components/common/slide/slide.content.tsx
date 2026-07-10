@@ -1,6 +1,7 @@
 import './style.css';
 import { memo } from 'react';
 import type { ISlide } from './slide.type';
+import { useNavigate } from 'react-router';
 
 type alignment = 'items-start' | 'items-center' | 'items-end' | 'text-left' | 'text-center' | 'text-right';
 
@@ -13,8 +14,9 @@ const mapAlign: Record<NonNullable<ISlide['textAlign']>, alignment[]> = {
 interface Props extends ISlide {
 	isActive: boolean;
 }
-export const SlideContent = memo(({ img, badge, title, cta, textAlign = 'left', isActive }: Props) => {
+export const SlideContent = memo(({ img, badge, title, cta, textAlign = 'left', isActive, path }: Props) => {
 	const [alignItems, textAlignClass] = mapAlign[textAlign];
+	const navigate = useNavigate();
 
 	return (
 		<section
@@ -31,7 +33,7 @@ export const SlideContent = memo(({ img, badge, title, cta, textAlign = 'left', 
 
 			{/* Gradient overlay */}
 
-			{/* <div className="absolute inset-0 bg-linear-to-r from-black/30 via-black/10 to-transparent" /> */}
+			<div className="absolute inset-0 bg-linear-to-r from-black/30 via-black/10 to-transparent" />
 
 			{/* Content */}
 
@@ -49,6 +51,7 @@ export const SlideContent = memo(({ img, badge, title, cta, textAlign = 'left', 
 				<button
 					type="button"
 					aria-label={`Go to ${title}`}
+					onClick={() => (path ? navigate(path) : {})}
 					className="bg-black text-white font-semibold px-6 py-3 uppercase text-sm tracking-wide w-fit cursor-pointer"
 				>
 					{cta}

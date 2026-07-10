@@ -5,4 +5,5 @@ export interface ISlide {
 	title: string;
 	cta: string;
 	textAlign?: 'left' | 'center' | 'right';
+	path?: string;
 }
