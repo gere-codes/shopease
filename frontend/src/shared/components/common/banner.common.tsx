@@ -12,14 +12,13 @@ export const PromoBanner = ({ title, cta, badge }: Props) => {
 			<section className="flex justify-between items-center w-full max-w-7xl mx-auto px-6">
 				<section>
 					<ul className="flex flex-col gap-4 ">
+						<li></li>
+						<Link to={'/catalog?category=kids'}>Kids</Link>
 						<li>
-							<Link to={'/women'}>Women</Link>
+							<Link to={'/catalog?category=men'}>Men</Link>
 						</li>
 						<li>
-							<Link to={'/men'}>Men</Link>
-						</li>
-						<li>
-							<Link to={'/Kids'}>Kids</Link>
+							<Link to={'/catalog?category=women'}>Women</Link>
 						</li>
 					</ul>
 				</section>
