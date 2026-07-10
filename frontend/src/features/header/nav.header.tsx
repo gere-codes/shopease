@@ -41,7 +41,7 @@ export const Nav = () => {
 		<header className="bg-white shadow-xs sticky top-0 z-50 h-18">
 			<nav className="max-w-7xl mx-auto py-4 px-6 flex justify-between items-center" aria-label="Main Navigation">
 				{/* Logo */}
-				<Link className="font-bold text-2xl text-gray-600" to="/">
+				<Link className="font-bold text-2xl text-gray-900" to="/">
 					ShopEase
 				</Link>
 
@@ -64,7 +64,7 @@ export const Nav = () => {
 							value={searchQuery}
 							onChange={(e) => setSearchQuery(e.target.value)}
 							placeholder="Search..."
-							className="bg-gray-100 rounded-full py-2 px-4 pl-10 w-48 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+							className="bg-gray-100 rounded-full py-2 px-4 pl-10 w-48 focus:outline-none focus:ring-2 focus:ring-gray-100 text-sm"
 						/>
 						<button
 							type="submit"
@@ -113,7 +113,7 @@ export const Nav = () => {
 									value={searchQuery}
 									onChange={(e) => setSearchQuery(e.target.value)}
 									placeholder="Search items..."
-									className="w-full bg-gray-100 rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+									className="w-full bg-gray-100 rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-gray-100"
 								/>
 								<button
 									type="submit"
@@ -135,7 +135,7 @@ export const Nav = () => {
 						<li className="border-t border-gray-100 pt-2">
 							<Link
 								to="/cart"
-								className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 transition-colors duration-200 py-2"
+								className="flex items-center gap-2 text-gray-600 hover:text-gray-600 transition-colors duration-200 py-2"
 								onClick={() => setIsMenuOpen(false)}
 							>
 								<div className="relative">
