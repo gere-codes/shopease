@@ -3,7 +3,7 @@ import z from 'zod';
 export const commonQuery = z.object({
 	isPaginated: z.boolean().default(true),
 	page: z.coerce.number().int().positive().default(1),
-	limit: z.coerce.number().int().positive().min(4).max(50).default(10),
+	limit: z.coerce.number().int().positive().min(4).max(50).default(25),
 	search: z.string().optional(),
 	sortBy: 'featured',
 });
