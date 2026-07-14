@@ -38,11 +38,14 @@ export const Nav = () => {
 		}`;
 
 	return (
-		<header className="bg-white shadow-xs sticky top-0 z-50 h-18">
+		<header className="bg-white  sticky top-0 z-50 h-18 border-b border-b-gray-200">
 			<nav className="max-w-7xl mx-auto py-4 px-6 flex justify-between items-center" aria-label="Main Navigation">
 				{/* Logo */}
-				<Link className="font-bold text-2xl text-gray-900" to="/">
-					ShopEase
+				<Link
+					className="font-bold text-2xl w-10 h-10 bg-black rounded-lg flex items-center justify-center "
+					to="/"
+				>
+					<span className="text-white">S</span>
 				</Link>
 
 				{/* Desktop: Nav Links */}
