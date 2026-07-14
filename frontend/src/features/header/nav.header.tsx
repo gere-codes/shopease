@@ -3,11 +3,13 @@ import { NavLink, Link, useNavigate, useSearchParams } from 'react-router';
 import { FiShoppingCart, FiSearch, FiMenu, FiX } from 'react-icons/fi';
 import { useAppSelector } from '@/shared/hooks/redux.hook';
 import { selectCartTotalItems } from '../cart';
+import './style.css';
 
 const navLinks = [
-	{ to: '/men', label: 'Men', slug: 'men' },
 	{ to: '/women', label: 'Women', slug: 'women' },
+	{ to: '/men', label: 'Men', slug: 'men' },
 	{ to: '/kids', label: 'Kids', slug: 'kids' },
+	{ to: '/accesories', label: 'accessories', slug: 'accessories' },
 ];
 export const Nav = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,10 +34,7 @@ export const Nav = () => {
 		setIsMenuOpen(false);
 	};
 
-	const linkStyles = ({ isActive }: { isActive: boolean }) =>
-		`transition-colors duration-200 block py-2 md:py-0 font-medium ${
-			isActive ? 'text-black ' : 'text-gray-600 hover:text-black'
-		}`;
+	const linkStyles = `nav-link block py-2 md:py-0 font-medium uppercase`;
 
 	return (
 		<header className="bg-white  sticky top-0 z-50 h-18 border-b border-b-gray-200">
@@ -51,10 +50,10 @@ export const Nav = () => {
 				{/* Desktop: Nav Links */}
 				<ul className="hidden md:flex gap-8">
 					{navLinks.map((link) => (
-						<li key={link.to}>
-							<NavLink to={`catalog?category=${link.slug}`} className={linkStyles}>
+						<li key={link.to} className="relative">
+							<Link to={`catalog?category=${link.slug}`} className={linkStyles}>
 								{link.label}
-							</NavLink>
+							</Link>
 						</li>
 					))}
 				</ul>
