@@ -14,7 +14,7 @@ export const slides: ISlide[] = [
 	},
 	{
 		id: 2,
-		title: 'buy 1 get 1 free',
+		title: 'Trending Now',
 		img: banner2,
 		cta: 'grab offer',
 		badge: 'limited offer',

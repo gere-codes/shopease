@@ -20,7 +20,7 @@ export const SlideContent = memo(({ img, badge, title, cta, textAlign = 'left', 
 
 	return (
 		<section
-			className={`relative h-full w-full overflow-hidden text-black capitalize font-heading ${isActive ? 'is-active' : ''}`}
+			className={`relative h-full w-full overflow-hidden text-black  font-heading ${isActive ? 'is-active' : ''}`}
 		>
 			{/* BG image */}
 
@@ -31,10 +31,6 @@ export const SlideContent = memo(({ img, badge, title, cta, textAlign = 'left', 
 				className="absolute inset-0 h-full w-full object-cover scale-105 opacity-0 animate-heroImage"
 			/>
 
-			{/* Gradient overlay */}
-
-			{/* <div className="absolute inset-0 bg-linear-to-r from-black/30 via-black/10 to-transparent" /> */}
-
 			{/* Content */}
 
 			<div
@@ -44,7 +40,7 @@ export const SlideContent = memo(({ img, badge, title, cta, textAlign = 'left', 
 					{badge}
 				</small>
 
-				<h2 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight animate-fadeUp delay-150 text-black">
+				<h2 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight animate-fadeUp delay-150 text-black whitespace-pre-wrap uppercase">
 					{title}
 				</h2>
 
