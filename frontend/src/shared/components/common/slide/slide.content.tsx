@@ -33,7 +33,7 @@ export const SlideContent = memo(({ img, badge, title, cta, textAlign = 'left', 
 
 			{/* Gradient overlay */}
 
-			<div className="absolute inset-0 bg-linear-to-r from-black/30 via-black/10 to-transparent" />
+			{/* <div className="absolute inset-0 bg-linear-to-r from-black/30 via-black/10 to-transparent" /> */}
 
 			{/* Content */}
 
