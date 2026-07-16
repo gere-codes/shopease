@@ -19,15 +19,11 @@ export const ProductImages = ({ product, baseUrl }: { product: NonNullable<TProd
 				thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
 				navigation={false}
 				modules={[FreeMode, Navigation, Thumbs]}
-				className="w-full rounded-lg bg-gray-100 aspect-square md:order-2"
+				className="w-full rounded-lg bg-gray-100  md:order-2"
 			>
 				{product?.images?.map((img, index) => (
 					<SwiperSlide key={`main-${index}`} className="flex items-center justify-center">
-						<img
-							src={`${baseUrl}${img}`}
-							alt="Product display"
-							className="w-full h-full object-cover aspect-square"
-						/>
+						<img src={`${baseUrl}${img}`} alt="Product display" className="w-full h-full object-cover " />
 					</SwiperSlide>
 				))}
 			</Swiper>
@@ -50,7 +46,7 @@ export const ProductImages = ({ product, baseUrl }: { product: NonNullable<TProd
 			>
 				{product?.images?.map((img, index) => (
 					<SwiperSlide key={`thumb-${index}`} className="cursor-pointer">
-						<div className="aspect-square bg-gray-100 rounded border border-transparent overflow-hidden [[data-swiper-slide-index]].swiper-slide-thumb-active:&:border-black">
+						<div className=" bg-gray-100 rounded border border-transparent overflow-hidden [[data-swiper-slide-index]].swiper-slide-thumb-active:&:border-black">
 							<img src={`${baseUrl}${img}`} alt="Product thumb" className="w-full h-full object-cover" />
 						</div>
 					</SwiperSlide>

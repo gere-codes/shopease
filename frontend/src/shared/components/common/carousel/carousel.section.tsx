@@ -34,9 +34,9 @@ const CarouselItem = <T extends { id: string | number; name: string; image: stri
 	return (
 		<div className="">
 			<Link to={route(item)} className="overflow-hidden">
-				<div className="group block relative rounded-full overflow-hidden">
+				<div className="group block relative rounded-full max-h-[300px] overflow-hidden">
 					<img
-						className="object-cover aspect-square transition-transform duration-300 group-hover:scale-105"
+						className="object-fill w-full h-full transition-transform duration-300 group-hover:scale-105"
 						src={`${baseUrl}${item?.image}`}
 						alt={item.name}
 						loading="lazy"
