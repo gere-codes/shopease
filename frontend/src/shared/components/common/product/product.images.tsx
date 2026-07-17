@@ -14,6 +14,7 @@ export const ProductImages = ({ product, baseUrl }: { product: NonNullable<TProd
 
 	return (
 		<section className="w-full md:w-1/2 min-w-0 overflow-hidden flex flex-col md:flex-row gap-3">
+			{/* Main Swiper */}
 			<Swiper
 				spaceBetween={10}
 				thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
@@ -42,11 +43,14 @@ export const ProductImages = ({ product, baseUrl }: { product: NonNullable<TProd
 						direction: 'vertical',
 					},
 				}}
-				className="w-full md:w-28 h-auto md:h-[400px] md:order-1 thumbnail-swiper"
+				className="w-full md:w-28 h-auto md:order-1 thumbnail-swiper"
 			>
 				{product?.images?.map((img, index) => (
-					<SwiperSlide key={`thumb-${index}`} className="cursor-pointer">
-						<div className=" bg-gray-100 rounded border border-transparent overflow-hidden [[data-swiper-slide-index]].swiper-slide-thumb-active:&:border-black">
+					<SwiperSlide
+						key={`thumb-${index}`}
+						className={`cursor-pointer overflow-hidden md:h-[300px] ${index === thumbsSwiper?.activeIndex ? 'border-black' : ''}`}
+					>
+						<div className="h-full bg-gray-100 rounded border border-transparent overflow-hidden">
 							<img src={`${baseUrl}${img}`} alt="Product thumb" className="w-full h-full object-cover" />
 						</div>
 					</SwiperSlide>

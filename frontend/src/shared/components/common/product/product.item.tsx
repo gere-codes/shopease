@@ -10,7 +10,7 @@ export const ProductItem = ({ product, baseUrl }: { product: TProduct; baseUrl: 
 						src={`${baseUrl}${product?.images[0]}`}
 						alt={product.name}
 						loading="lazy"
-						className="h-full object-cover aspect-square transition-transform duration-300 group-hover:scale-105"
+						className="h-full transition-transform duration-300 group-hover:scale-105"
 					/>
 				</div>
 			</Link>
