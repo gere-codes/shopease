@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { ProductGrid } from '@common';
 import { useUrlFilteredFetch } from '@/shared/hooks';
 import { productQuerySchema, type TProduct, type TProductQuery } from '@/shared/schema';
 import { selectProductSlice } from '@/shared/store/product/product.selector';
@@ -7,7 +6,7 @@ import { productThunks } from '@/shared/store/product/product.thunks';
 import { BASE_URL } from '@/shared/api';
 import { useCatalogActions } from '@/features/catalog/catalog.hook';
 import type { TProductKey } from '@/shared/store';
-import { CatalogHeader, DesktopFilter, MobileFilter } from '@/features/catalog';
+import { CatalogHeader, CatalogMain, DesktopFilter, MobileFilter } from '@/features/catalog';
 
 export const CatalogPage = () => {
 	const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
@@ -38,26 +37,11 @@ export const CatalogPage = () => {
 			/>
 
 			<div className="flex gap-8">
-				{/* Desktop Filter Sidebar */}
-
+				{/* Desktop: Filter Contoroller */}
 				<DesktopFilter clearAllFilters={clearAllFilters} localFilters={localFilters} onFilter={handleChanges} />
 
-				{/* Main Product Display Section */}
-				<main className="flex-1">
-					{data.length > 0 ? (
-						<ProductGrid products={data} baseUrl={BASE_URL} />
-					) : (
-						<div className="text-center py-24 bg-gray-50 rounded-xl border border-dashed">
-							<p className="text-gray-500 text-lg">No products match your current criteria.</p>
-							<button
-								onClick={clearAllFilters}
-								className="mt-3 text-gray-600 font-medium hover:underline"
-							>
-								Reset all parameters
-							</button>
-						</div>
-					)}
-				</main>
+				{/* Main: Products */}
+				<CatalogMain baseUrl={BASE_URL} clearAllFilters={clearAllFilters} data={data} />
 			</div>
 
 			{/*  Mobile: Filter Controller */}
