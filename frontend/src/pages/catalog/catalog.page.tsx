@@ -8,7 +8,7 @@ import { productThunks } from '@/shared/store/product/product.thunks';
 import { BASE_URL } from '@/shared/api';
 import { useCatalogActions } from '@/features/catalog/catalog.hook';
 import type { TProductKey } from '@/shared/store';
-import { FilterControls } from '@/features/catalog';
+import { FilterControls, MobileFilter } from '@/features/catalog';
 
 export const CatalogPage = () => {
 	const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
@@ -23,6 +23,10 @@ export const CatalogPage = () => {
 
 	// Handle catalog events
 	const { handleChanges, localFilters, clearAllFilters, searchParams } = useCatalogActions();
+
+	const handleMobileFilterOpen = (isOpen: boolean) => {
+		setIsMobileFilterOpen(isOpen);
+	};
 
 	return (
 		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -39,7 +43,7 @@ export const CatalogPage = () => {
 				{/* Sorting and Mobile Filter Button */}
 				<div className="flex items-center justify-between md:justify-end gap-4">
 					<button
-						onClick={() => setIsMobileFilterOpen(true)}
+						onClick={() => handleMobileFilterOpen(true)}
 						className="md:hidden flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white"
 					>
 						<FiSliders /> Filters
@@ -86,33 +90,14 @@ export const CatalogPage = () => {
 				</main>
 			</div>
 
-			{/* Slide-out Mobile Filter Drawer Overlay */}
-			{isMobileFilterOpen && (
-				<div className="fixed inset-0 z-50 md:hidden flex justify-end">
-					{/* Backdrop */}
-					<div
-						className="fixed inset-0 bg-black/40 transition-opacity"
-						onClick={() => setIsMobileFilterOpen(false)}
-					/>
-
-					{/* Drawer Content */}
-					<div className="relative w-full max-w-xs bg-white h-full p-6 shadow-xl flex flex-col overflow-y-auto animate-slide-in">
-						<div className="flex items-center justify-between border-b pb-4 mb-6">
-							<h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-								<FiSliders /> Filters
-							</h2>
-							<button onClick={() => setIsMobileFilterOpen(false)} className="text-gray-500 p-1">
-								<FiX size={24} />
-							</button>
-						</div>
-						<FilterControls
-							filters={localFilters}
-							handleChanges={handleChanges}
-							clearAllFilters={clearAllFilters}
-						/>
-					</div>
-				</div>
-			)}
+			{/*  Mobile: Filter Controller */}
+			<MobileFilter
+				isMobileFilterOpen={isMobileFilterOpen}
+				clearAllFilters={clearAllFilters}
+				localFilters={localFilters}
+				onCategories={handleChanges}
+				handleMobileFilterOpen={handleMobileFilterOpen}
+			/>
 		</div>
 	);
 };
