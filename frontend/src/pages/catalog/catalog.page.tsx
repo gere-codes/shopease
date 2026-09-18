@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { FiSliders, FiX } from 'react-icons/fi';
 import { ProductGrid } from '@common';
 import { useUrlFilteredFetch } from '@/shared/hooks';
 import { productQuerySchema, type TProduct, type TProductQuery } from '@/shared/schema';
@@ -8,7 +7,7 @@ import { productThunks } from '@/shared/store/product/product.thunks';
 import { BASE_URL } from '@/shared/api';
 import { useCatalogActions } from '@/features/catalog/catalog.hook';
 import type { TProductKey } from '@/shared/store';
-import { CatalogHeader, FilterControls, MobileFilter } from '@/features/catalog';
+import { CatalogHeader, DesktopFilter, MobileFilter } from '@/features/catalog';
 
 export const CatalogPage = () => {
 	const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
@@ -40,13 +39,8 @@ export const CatalogPage = () => {
 
 			<div className="flex gap-8">
 				{/* Desktop Filter Sidebar */}
-				<aside className="hidden md:block w-64 shrink-0 border-r border-gray-100 pr-8">
-					<FilterControls
-						filters={localFilters}
-						handleChanges={handleChanges}
-						clearAllFilters={clearAllFilters}
-					/>
-				</aside>
+
+				<DesktopFilter clearAllFilters={clearAllFilters} localFilters={localFilters} onFilter={handleChanges} />
 
 				{/* Main Product Display Section */}
 				<main className="flex-1">
@@ -71,7 +65,7 @@ export const CatalogPage = () => {
 				isMobileFilterOpen={isMobileFilterOpen}
 				clearAllFilters={clearAllFilters}
 				localFilters={localFilters}
-				onCategories={handleChanges}
+				onFilter={handleChanges}
 				handleMobileFilterOpen={handleMobileFilterOpen}
 			/>
 		</div>

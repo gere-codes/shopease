@@ -3,14 +3,14 @@ import { FiSliders, FiX } from 'react-icons/fi';
 import type { TProductQuery } from '@/shared/schema';
 interface Props {
 	clearAllFilters: () => void;
-	onCategories: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement, Element>) => void;
+	onFilter: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement, Element>) => void;
 	localFilters: TProductQuery;
 	isMobileFilterOpen: boolean;
 	handleMobileFilterOpen: (isOpen: boolean) => void;
 }
 export const MobileFilter = ({
 	clearAllFilters,
-	onCategories,
+	onFilter,
 	localFilters,
 	isMobileFilterOpen,
 	handleMobileFilterOpen,
@@ -37,7 +37,7 @@ export const MobileFilter = ({
 						</div>
 						<FilterControls
 							filters={localFilters}
-							handleChanges={onCategories}
+							handleChanges={onFilter}
 							clearAllFilters={clearAllFilters}
 						/>
 					</div>
