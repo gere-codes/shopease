@@ -8,7 +8,7 @@ import { productThunks } from '@/shared/store/product/product.thunks';
 import { BASE_URL } from '@/shared/api';
 import { useCatalogActions } from '@/features/catalog/catalog.hook';
 import type { TProductKey } from '@/shared/store';
-import { FilterControls, MobileFilter } from '@/features/catalog';
+import { CatalogHeader, FilterControls, MobileFilter } from '@/features/catalog';
 
 export const CatalogPage = () => {
 	const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
@@ -30,37 +30,13 @@ export const CatalogPage = () => {
 
 	return (
 		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-			{/* Context Header */}
-			<div className="border-b border-gray-200 pb-5 mb-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-				<div>
-					<h1 className="text-3xl font-bold tracking-tight text-gray-900 capitalize">
-						{searchParams?.get('search')
-							? `Results for "${searchParams?.get('search')}"`
-							: `${localFilters?.category} Collection`}
-					</h1>
-				</div>
-
-				{/* Sorting and Mobile Filter Button */}
-				<div className="flex items-center justify-between md:justify-end gap-4">
-					<button
-						onClick={() => handleMobileFilterOpen(true)}
-						className="md:hidden flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white"
-					>
-						<FiSliders /> Filters
-					</button>
-
-					<select
-						value={localFilters?.sortBy}
-						name="sortBy"
-						onChange={handleChanges}
-						className="rounded-md border-gray-300 py-2 pl-3 pr-10 text-sm focus:border-gray-300 focus:outline-none focus:ring-gray-500 bg-white border"
-					>
-						<option value="featured">Sort by: Featured</option>
-						<option value="priceAsc">Price: Low to High</option>
-						<option value="priceDesc">Price: High to Low</option>
-					</select>
-				</div>
-			</div>
+			{/* Catalog Header */}
+			<CatalogHeader
+				handleMobileFilterOpen={handleMobileFilterOpen}
+				searchParams={searchParams}
+				onSort={handleChanges}
+				localFilters={localFilters}
+			/>
 
 			<div className="flex gap-8">
 				{/* Desktop Filter Sidebar */}
