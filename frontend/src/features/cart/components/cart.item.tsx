@@ -10,7 +10,7 @@ interface Props {
 }
 export const CartItem = ({ item, baseUrl, updateQuantity, onRemove }: Props) => {
 	return (
-		<li key={item.product.id} className="p-4 sm:p-6 flex flex-col sm:flex-row gap-4 sm:gap-6">
+		<li className="p-4 sm:p-6 flex flex-col sm:flex-row gap-4 sm:gap-6">
 			{/* Product Image */}
 			<div className="w-full sm:w-24 h-24 flex-shrink-0 bg-gray-100 rounded-md overflow-hidden border border-gray-200 flex items-center justify-center">
 				<img
