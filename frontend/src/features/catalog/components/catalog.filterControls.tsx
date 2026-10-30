@@ -1,4 +1,5 @@
 import type { TProductQuery } from '@/shared/schema';
+import { filterBy } from '../constants';
 
 export const FilterControls = ({
 	clearAllFilters,
@@ -13,7 +14,7 @@ export const FilterControls = ({
 		<div>
 			<h3 className="font-semibold text-gray-900 mb-3">Categories</h3>
 			<div className="space-y-2">
-				{['all', 'men', 'women', 'kids'].map((cat) => (
+				{filterBy.map((cat) => (
 					<label
 						key={cat}
 						className="flex items-center gap-2 text-gray-600 capitalize cursor-pointer hover:text-gray-600"
